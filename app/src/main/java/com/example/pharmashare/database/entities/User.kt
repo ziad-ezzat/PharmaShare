@@ -10,5 +10,6 @@ data class User(
     @ColumnInfo(name = "username")val username: String,
     @ColumnInfo(name = "phone_number") val phoneNumber: String,
     @ColumnInfo(name = "password")val password: String,
-    @ColumnInfo(name = "subscription")val subscription: Int
+    @ColumnInfo(name = "subscription")val subscription: Int,
+    @ColumnInfo(name = "is_logged_in") val isLoggedIn: Boolean = false
 )

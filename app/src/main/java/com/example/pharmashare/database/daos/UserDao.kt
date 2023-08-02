@@ -10,7 +10,10 @@ import com.example.pharmashare.database.entities.User
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(user: User)
-
     @Query("SELECT * FROM users WHERE phone_number = :phoneNumber AND password = :password")
     suspend fun checkLoginCredentials(phoneNumber: String, password: String): User
+    @Query("SELECT * FROM users WHERE is_logged_in = 1")
+    fun getLoggedInUser(): User?
+    @Query("UPDATE users SET is_logged_in = 1 WHERE id = :userId")
+    fun setLoggedInUser(userId: Int)
 }

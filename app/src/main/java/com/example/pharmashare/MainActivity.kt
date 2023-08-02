@@ -12,14 +12,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // How to use the database in the app:
-//        val db = AppDatabase.getInstance(this)
-//
-//        lifecycleScope.launch {
-//            val userDao = db.userDao()
-//            val user = User(2, "ziad", "9876543210","4321",2)
-//            userDao.insert(user)
-//        }
-
     }
 }
