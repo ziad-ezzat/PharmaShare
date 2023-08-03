@@ -10,7 +10,6 @@
         android:id="@+id/nav_menu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
         android:clipToPadding="true"
         app:itemIconSize="32dp"
         app:itemIconTint="@color/black"
