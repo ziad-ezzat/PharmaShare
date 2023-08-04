@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "630697674123",
+    "project_id": "pharma-share-e11ed",
+    "storage_bucket": "pharma-share-e11ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630697674123:android:03e4743e4000e61cbfdb8e",
+        "android_client_info": {
+          "package_name": "com.example.pharmashare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630697674123-mmt6tpb7h6a4j9sphujul2e31074qlkg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-w2thO2tzo3BngLZIvwwL8KVxk5Spgak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630697674123-mmt6tpb7h6a4j9sphujul2e31074qlkg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

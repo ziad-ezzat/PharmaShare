@@ -6,9 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.example.pharmashare.database.AppDatabase
-import kotlinx.coroutines.launch
+import com.example.pharmashare.firebase.repos.UserRepository
 
 class LoginActivity : AppCompatActivity() {
 
@@ -16,43 +14,55 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // if user is already logged in, go to main activity
-        val loggedInUser = AppDatabase.getInstance(this).userDao().getLoggedInUser()
-        if (loggedInUser != null) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
+        // Get references to UI elements
         val phoneNumberEditText = findViewById<EditText>(R.id.editTextPhoneNumber)
         val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
         val loginButton = findViewById<Button>(R.id.buttonLogin)
 
-        // when login button is clicked, check if credentials are valid
+        // if user is already logged in, navigate to the next activity
+        if (UserRepository.isLoggedIn()) {
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish() // Close the current login activity
+        }
+
+        // Set click listener on login button
         loginButton.setOnClickListener {
             val phoneNumber = phoneNumberEditText.text.toString()
             val password = passwordEditText.text.toString()
 
-            lifecycleScope.launch {
-                val user = AppDatabase.getInstance(this@LoginActivity).userDao()
-                    .checkLoginCredentials(phoneNumber, password)
+            // Check if user entered phone number and password
+            if (phoneNumber.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please enter phone number and password", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-                if (user != null) {
-                    // if credentials are valid, set user as logged in
-                    AppDatabase.getInstance(this@LoginActivity).userDao().setLoggedInUser(user.id)
-                    // if credentials are valid, go to main activity
+            // Check if user exists in Firebase database
+            UserRepository.checkLogin(phoneNumber, password) { success, message ->
+                if (success) {
+                    // Navigate to the next activity
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
-                    finish()
+                    finish() // Close the current login activity
                 } else {
-                    // if credentials are invalid, show error message using Toast
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "Invalid credentials",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 }
+
+/*
+        //logout
+        UserRepository.logout()
+
+        // Create a user in Firebase database
+        val user = User("1", "John Doe", "123456789", "123456", "8/4/2023")
+        UserRepository.createUser(user) { success, message ->
+            if (success) {
+                Toast.makeText(this, "User created successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
+        }
+ */
