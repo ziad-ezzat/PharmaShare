@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".screens.AddFragment">
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:minHeight="48dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:clipToPadding="true"
+        android:textColorHint="#090909"
+        app:counterEnabled="true"
+        app:counterMaxLength="5"
+        app:counterTextAppearance="@style/TextAppearance.AppCompat.Large">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_quantaty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quantity"
+            android:inputType="number"
+            android:textColor="#040404"
+            android:textColorHint="#0B0A0A"
+            android:textSize="22sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColorHint="#0C0C0C"
+        app:counterEnabled="true"
+        app:counterMaxLength="5"
+        app:counterTextAppearance="@style/TextAppearance.AppCompat.Large">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/price"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="22sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/fragment_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:drawableEnd="@drawable/baseline_edit_calendar_24"
+        android:drawablePadding="10dp"
+        android:textSize="22sp" />
+
+    <Button
+        android:id="@+id/fragment_add_medicine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="#06587E"
+        android:text="@string/fragment_add_medicine"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:cornerRadius="25dp"
+        app:icon="@drawable/baseline_check_circle_outline_24" />
+</LinearLayout>
