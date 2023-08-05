@@ -1,5 +1,6 @@
 package com.example.pharmashare.firebase.repos
 
+import com.example.pharmashare.firebase.objects.Pharmacy
 import com.example.pharmashare.firebase.objects.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -36,6 +37,26 @@ object UserRepository {
             }
     }
 
+    // create a pharmacy in Firebase database where the user is the owner
+    fun createPharmacy(pharmacy: Pharmacy, callback: (Boolean, String?) -> Unit) {
+        if (auth.currentUser != null) {
+            val pharmacyId = database.getReference("pharmacies").push().key ?: ""
+            val newPharmacy = Pharmacy(pharmacyId, pharmacy.name, pharmacy.address, auth.currentUser!!.uid)
+
+            database.getReference("pharmacies").child(pharmacyId).setValue(newPharmacy)
+                .addOnCompleteListener { createPharmacyTask ->
+                    if (createPharmacyTask.isSuccessful) {
+                        callback(true, null) // Success
+                    } else {
+                        callback(false, createPharmacyTask.exception?.message) // Handle pharmacy creation failure
+                    }
+                }
+        } else {
+            callback(false, "User not authenticated") // Handle user not authenticated
+        }
+    }
+
+
     // Check user login with phone number and password
     fun checkLogin(phoneNumber: String, password: String, callback: (Boolean, String?) -> Unit) {
         auth.signInWithEmailAndPassword("${phoneNumber}@example.com", password)
@@ -61,6 +82,11 @@ object UserRepository {
     // Check if user is logged in
     fun isLoggedIn(): Boolean {
         return auth.currentUser != null
+    }
+
+    // Get the current user id
+    fun getCurrentUserId(): String {
+        return auth.currentUser?.uid ?: ""
     }
 
     // Calculate the subscription date by adding 10 days to the current date
