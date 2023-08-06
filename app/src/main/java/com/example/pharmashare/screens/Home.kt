@@ -13,6 +13,7 @@ import com.example.pharmashare.database.entities.Order
 import com.example.pharmashare.database.entities.SharedMedicine
 import com.example.pharmashare.databinding.ActivityHomeBinding
 import com.example.pharmashare.screens.adptars.HomeAdaptar
+import com.example.pharmashare.screens.adptars.OrderAdaptar
 import com.example.pharmashare.screens.adptars.profileAdaptar
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -46,10 +47,11 @@ class Home : AppCompatActivity(), HomeAdaptar.HomeLinsener {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val homeAdptar = HomeAdaptar(this)
-        val orderAdptar = profileAdaptar()
+        val profileAdptar = profileAdaptar()
+        val orderAdaptar = OrderAdaptar(arr2)
         homeAdptar.arr = arr2
         homeAdptar.list = arr1
-        orderAdptar.arrayList = arr3
+        profileAdptar.arrayList = arr3
         binding.navMenu.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_home -> {
@@ -68,12 +70,14 @@ class Home : AppCompatActivity(), HomeAdaptar.HomeLinsener {
 
                 R.id.menu_order -> {
                     println("order")
-
+                    val fragment = order_fragment.newInstance(orderAdaptar)
+                    supportFragmentManager.beginTransaction().replace(R.id.home_frame, fragment)
+                        .commit()
                 }
 
                 R.id.menu_profile -> {
                     println("profile")
-                    val fragment = ProfileFragment.newInstance(1, orderAdptar)
+                    val fragment = ProfileFragment.newInstance(1, profileAdptar)
                     supportFragmentManager.beginTransaction().replace(R.id.home_frame, fragment)
                         .commit()
                 }

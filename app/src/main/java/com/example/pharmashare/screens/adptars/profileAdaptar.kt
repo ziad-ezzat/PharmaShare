@@ -37,7 +37,7 @@ class profileAdaptar() : RecyclerView.Adapter<profileAdaptar.Holder>(),Parcelabl
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.ordercard, parent, false
+                R.layout.profilecard, parent, false
             )
         )
     }
