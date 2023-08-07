@@ -4,6 +4,7 @@ import com.example.pharmashare.firebase.objects.Pharmacy
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.tasks.await
 
 object PharmacyRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -50,7 +51,30 @@ object PharmacyRepository {
         getPharmaciesWithFilter({ true }, callback)
     }
 
-    fun getPharmacyNameRef(name: String): DatabaseReference {
-        return pharmaciesRef.child(name)
+    // Get pharmacy by name
+    fun getPharmacyByName(name: String, callback: (Pharmacy?) -> Unit) {
+        pharmaciesRef.get().addOnSuccessListener { pharmaciesSnapshot ->
+            pharmaciesSnapshot.children.forEach { pharmacySnapshot ->
+                val pharmacy = pharmacySnapshot.getValue(Pharmacy::class.java)
+                if (pharmacy != null && pharmacy.name == name) {
+                    callback(pharmacy)
+                    return@addOnSuccessListener
+                }
+            }
+            callback(null)
+        }
     }
+
+    // Get pharmacy id by name
+    suspend fun getPharmacyIdByName(name: String): String? {
+        val pharmaciesSnapshot = pharmaciesRef.get().await()
+        pharmaciesSnapshot.children.forEach { pharmacySnapshot ->
+            val pharmacy = pharmacySnapshot.getValue(Pharmacy::class.java)
+            if (pharmacy != null && pharmacy.name == name) {
+                return pharmacy.id
+            }
+        }
+        return null
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.example.pharmashare.screens
 
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,67 +9,39 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pharmashare.R
-import com.example.pharmashare.screens.adptars.profileAdaptar
+import com.example.pharmashare.firebase.objects.Order
+import com.example.pharmashare.firebase.repos.OrderRepository
+import com.example.pharmashare.firebase.repos.PharmacyRepository
+import com.example.pharmashare.firebase.repos.UserRepository
+import com.example.pharmashare.screens.adptars.ProfileAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "user_id"
-private const val ARG_PARAM2 = "adapter"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var userId: Int? = null
-    private var adapter: Any? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            userId = it.getInt(ARG_PARAM1)
-            adapter = it.getParcelable(ARG_PARAM2)
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val rv:RecyclerView = view.findViewById(R.id.profile_rv)
-        val nameTv:TextView = view.findViewById(R.id.Profile_name)
-        val pharmacyTv:TextView = view.findViewById(R.id.Profile_pharmacy)
-        nameTv.text = "Mohamed"
-        pharmacyTv.text = "el fath"
-        rv.adapter = adapter as profileAdaptar
-        rv.layoutManager = LinearLayoutManager(view.context)
-        rv.setHasFixedSize(true)
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
-    }
+        val rootView = inflater.inflate(R.layout.fragment_profile, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: Int, param2: Any) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_PARAM1, param1)
-                    putParcelable(ARG_PARAM2, param2 as Parcelable)
-                }
+
+        val userId = UserRepository.getCurrentUserId()
+        var pharmacyName = ""
+        PharmacyRepository.getPharmacyByName(userId) { pharmacy ->
+            if (pharmacy != null) {
+                pharmacyName = pharmacy.name
             }
+        }
+        var prfileItems = ArrayList<Order>()
+        OrderRepository.getOrdersByName(pharmacyName) { orders ->
+            if (orders != null) {
+                prfileItems = orders
+            }
+        }
+
+        val recyclerView: RecyclerView = rootView.findViewById(R.id.profile_rv)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = ProfileAdapter(prfileItems)
+
+        return rootView
     }
 }

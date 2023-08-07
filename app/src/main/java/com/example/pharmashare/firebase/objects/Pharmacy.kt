@@ -1,6 +1,6 @@
 package com.example.pharmashare.firebase.objects
 
-data class Pharmacy @JvmOverloads constructor(
+data class Pharmacy(
     val id: String = "",
     val name: String = "",
     val address: String = "",

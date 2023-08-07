@@ -8,28 +8,61 @@ object CartRepository {
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val usersRef: DatabaseReference = database.getReference("cart")
 
-    // add to cart
-    fun insertCart(medicine: Cart) {
-        usersRef.child(medicine.medicine.id).setValue(medicine)
-    }
+    // insert a new cart into the database auto generated id
+    fun insertCart(cart: Cart, callback: (Boolean) -> Unit) {
+        val cartId = database.getReference("cart").push().key ?: ""
+        val newCart = Cart(cartId, cart.pharmacyId, cart.medicine, cart.quantity, cart.price, cart.priceTotal)
 
-    // get cart
-    fun getCart(callback: (ArrayList<Cart>) -> Unit) {
-        val cart = ArrayList<Cart>()
-        usersRef.get().addOnSuccessListener { cartSnapshot ->
-            cartSnapshot.children.forEach { cartSnapshot ->
-                val medicine = cartSnapshot.getValue(Cart::class.java)
-                if (medicine != null) {
-                    cart.add(medicine)
+        database.getReference("cart").child(cartId).setValue(newCart)
+            .addOnCompleteListener { createCartTask ->
+                if (createCartTask.isSuccessful) {
+                    callback(true) // Success
+                } else {
+                    callback(false) // Handle cart creation failure
                 }
             }
-            callback(cart)
+    }
+
+    // get all carts that the user make where PharmacyId = id
+    fun getCarts(id: String, callback: (ArrayList<Cart>) -> Unit) {
+        val carts = ArrayList<Cart>()
+        usersRef.get().addOnSuccessListener { cartsSnapshot ->
+            cartsSnapshot.children.forEach { cartSnapshot ->
+                val cart = cartSnapshot.getValue(Cart::class.java)
+                if (cart != null && cart.pharmacyId == id) {
+                    carts.add(cart)
+                }
+            }
+            callback(carts)
         }
     }
 
-    // remove from cart
-    fun removeCart(medicine: Cart) {
-        usersRef.child(medicine.medicine.id).removeValue()
+    // update cart quantity and priceTotal
+    fun updateCart(cart: Cart, callback: (Boolean) -> Unit) {
+        val cartId = cart.id
+        val newCart = Cart(cartId, cart.pharmacyId, cart.medicine, cart.quantity, cart.price, cart.priceTotal)
+
+        database.getReference("cart").child(cartId).setValue(newCart)
+            .addOnCompleteListener { updateCartTask ->
+                if (updateCartTask.isSuccessful) {
+                    callback(true) // Success
+                } else {
+                    callback(false) // Handle cart update failure
+                }
+            }
+    }
+
+    // remove cart from database
+    fun removeCart(cart: Cart, callback: (Boolean) -> Unit) {
+        val cartId = cart.id
+        database.getReference("cart").child(cartId).removeValue()
+            .addOnCompleteListener { removeCartTask ->
+                if (removeCartTask.isSuccessful) {
+                    callback(true) // Success
+                } else {
+                    callback(false) // Handle cart removal failure
+                }
+            }
     }
 
 }

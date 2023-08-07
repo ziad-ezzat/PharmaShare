@@ -8,11 +8,18 @@
     tools:context=".screens.AddFragment">
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/medicine_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:minHeight="48dp" />
+
+    <Spinner
+    android:id="@+id/pharmacy_spinner"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:minHeight="48dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -66,7 +73,7 @@
         android:textSize="22sp" />
 
     <Button
-        android:id="@+id/fragment_add_medicine"
+        android:id="@+id/add_medicine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

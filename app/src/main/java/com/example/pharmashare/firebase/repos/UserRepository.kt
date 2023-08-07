@@ -89,6 +89,23 @@ object UserRepository {
         return auth.currentUser?.uid ?: ""
     }
 
+    // create user and get user id to create pharmacy and put user id in owner id in pharmacy
+    fun createUserAndPharmacy(user: User, pharmacy: Pharmacy, callback: (Boolean, String?) -> Unit) {
+        createUser(user) { success, message ->
+            if (success) {
+                createPharmacy(pharmacy) { success, message ->
+                    if (success) {
+                        callback(true, null) // Success
+                    } else {
+                        callback(false, message) // Handle pharmacy creation failure
+                    }
+                }
+            } else {
+                callback(false, message) // Handle user creation failure
+            }
+        }
+    }
+
     // Calculate the subscription date by adding 10 days to the current date
     private fun calculateSubscriptionDate(): String {
         val sdf = SimpleDateFormat("dd/M/yyyy")

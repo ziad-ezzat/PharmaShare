@@ -7,7 +7,6 @@ import android.os.Handler
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
-import com.example.pharmashare.screens.Home
 
 class SplashActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -22,7 +21,7 @@ class SplashActivity : AppCompatActivity() {
             img.alpha = alp
         }
         Handler().postDelayed({
-            startActivity(Intent(this@SplashActivity, Home::class.java))
+            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             finish()
         }, 5700)
 
