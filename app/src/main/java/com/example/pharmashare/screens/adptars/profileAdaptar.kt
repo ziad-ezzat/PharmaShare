@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.pharmashare.R
 import com.example.pharmashare.firebase.objects.Order
-import java.text.DateFormat
 
 class profileAdaptar() : RecyclerView.Adapter<profileAdaptar.Holder>(),Parcelable {
 
@@ -37,7 +36,7 @@ class profileAdaptar() : RecyclerView.Adapter<profileAdaptar.Holder>(),Parcelabl
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.ordercard, parent, false
+                R.layout.profilecard, parent, false
             )
         )
     }
@@ -45,10 +44,9 @@ class profileAdaptar() : RecyclerView.Adapter<profileAdaptar.Holder>(),Parcelabl
     override fun getItemCount(): Int = arrayList.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val dateFormat:DateFormat = DateFormat.getInstance()
         holder.userName.text = arrayList[position].pharmacyId.toString()
         holder.datails.text = arrayList[position].orderDetails
-        holder.date_order.text = dateFormat.format(arrayList[position].orderDate)
+        holder.date_order.text = arrayList[position].orderDate
         holder.TotalPrice.text = arrayList[position].totalPrice.toString()
         holder.stutes.text = arrayList[position].status
     }

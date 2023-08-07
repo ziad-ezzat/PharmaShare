@@ -22,4 +22,6 @@
     <string name="quantity">quantity</string>
     <string name="price">Price</string>
     <string name="fragment_add_medicine">AddMedicine</string>
+    <string name="plus">plus</string>
+    <string name="minus">minus</string>
 </resources>
