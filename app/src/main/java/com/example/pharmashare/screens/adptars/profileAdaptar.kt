@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.pharmashare.R
-import com.example.pharmashare.database.entities.Order
+import com.example.pharmashare.firebase.objects.Order
 import java.text.DateFormat
 
 class profileAdaptar() : RecyclerView.Adapter<profileAdaptar.Holder>(),Parcelable {

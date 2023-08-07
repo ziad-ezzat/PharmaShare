@@ -10,8 +10,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pharmashare.R
-import com.example.pharmashare.database.entities.Medicine
-import com.example.pharmashare.database.entities.SharedMedicine
+import com.example.pharmashare.firebase.objects.Medicine
+import com.example.pharmashare.firebase.objects.SharedMedicine
 
 class HomeAdaptar(var homeListner: HomeLinsener?) : RecyclerView.Adapter<HomeAdaptar.Holder>(),Parcelable {
     var arr: ArrayList<SharedMedicine> = arrayListOf()
@@ -52,7 +52,7 @@ class HomeAdaptar(var homeListner: HomeLinsener?) : RecyclerView.Adapter<HomeAda
         }
     }
 
-    private fun getName(id: Int): String {
+    private fun getName(id: String): String {
         var s = ""
         list.forEach {
             if (it.id == id) {
