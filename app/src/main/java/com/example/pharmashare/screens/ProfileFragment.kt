@@ -1,6 +1,7 @@
 package com.example.pharmashare.screens
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,23 +23,35 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_profile, container, false)
-
-
+        /*
+        *
+        *  val userId = UserRepository.getCurrentUserId()
+        PharmacyRepository.getAllPharmaciesByOwnerId(userId) { pharmacies ->
+            val pharmacyNames = pharmacies.map { it.name }
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, pharmacyNames)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            pharmacySpinner.adapter = adapter
+        }
+        * */
         val userId = UserRepository.getCurrentUserId()
         var pharmacyName = ""
-        PharmacyRepository.getPharmacyByName(userId) { pharmacy ->
-            if (pharmacy != null) {
-                pharmacyName = pharmacy.name
+        val pharmacyNameTV:TextView = rootView.findViewById(R.id.Profile_pharmacy)
+        PharmacyRepository.getAllPharmaciesByOwnerId(userId) { pharmacyList ->
+            pharmacyList.forEach {
+                pharmacyName += it.name +"\n"
             }
+            pharmacyNameTV.text = pharmacyName
         }
         var prfileItems = ArrayList<Order>()
         OrderRepository.getOrdersByName(pharmacyName) { orders ->
-            if (orders != null) {
-                prfileItems = orders
-            }
+            prfileItems = orders
+            println(orders.size)
         }
 
         val recyclerView: RecyclerView = rootView.findViewById(R.id.profile_rv)
+        val profileName:TextView = rootView.findViewById(R.id.Profile_name)
+        profileName.text = userId
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = ProfileAdapter(prfileItems)
 

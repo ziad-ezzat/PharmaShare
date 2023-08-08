@@ -1,5 +1,6 @@
 package com.example.pharmashare.screens.adptars
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +13,11 @@ import com.example.pharmashare.R
 import com.example.pharmashare.firebase.objects.Cart
 import com.google.firebase.database.FirebaseDatabase
 
-class OrderAdapter(private val cartItems: MutableList<Cart>) :
+class OrderAdapter(private val cartItems: MutableList<Cart>,resultBack: ResultBack) :
     RecyclerView.Adapter<OrderAdapter.ViewHolder>() {
 
     private val totalLiveData = MutableLiveData<Double>()
-
+    private val resultBack:ResultBack = resultBack
     init {
         calculateTotalPrice()
     }
@@ -26,8 +27,12 @@ class OrderAdapter(private val cartItems: MutableList<Cart>) :
     }
 
     private fun calculateTotalPrice() {
-        val total = cartItems.sumByDouble { it.priceTotal }
+        var total = 0.0
+        cartItems.forEach {
+           total += it.priceTotal
+        }
         totalLiveData.value = total
+        resultBack.backPrice(total)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -59,6 +64,7 @@ class OrderAdapter(private val cartItems: MutableList<Cart>) :
             calculateTotalPrice()
             updateCartItem(cartItem)
             notifyItemChanged(position)
+            resultBack.backPrice(totalLiveData.value!!)
         }
 
         holder.minusButton.setOnClickListener {
@@ -70,8 +76,10 @@ class OrderAdapter(private val cartItems: MutableList<Cart>) :
                 calculateTotalPrice()
                 updateCartItem(cartItem)
                 notifyItemChanged(position)
+                resultBack.backPrice(totalLiveData.value!!)
             }
         }
+
     }
 
     private fun updateCartItem(cartItem: Cart) {
@@ -81,5 +89,8 @@ class OrderAdapter(private val cartItems: MutableList<Cart>) :
 
     override fun getItemCount(): Int {
         return cartItems.size
+    }
+    interface ResultBack {
+        fun backPrice(totalPrice:Double)
     }
 }
