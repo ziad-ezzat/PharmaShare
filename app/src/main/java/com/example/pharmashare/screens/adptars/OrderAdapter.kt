@@ -21,7 +21,7 @@ class OrderAdapter(private val cartItems: MutableList<Cart>,resultBack: ResultBa
     init {
         calculateTotalPrice()
     }
-
+    fun getAllDate(): MutableList<Cart> = cartItems
     fun getTotalLiveData(): LiveData<Double> {
         return totalLiveData
     }

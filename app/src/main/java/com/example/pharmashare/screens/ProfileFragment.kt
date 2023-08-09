@@ -43,17 +43,18 @@ class ProfileFragment : Fragment() {
             pharmacyNameTV.text = pharmacyName
         }
         var prfileItems = ArrayList<Order>()
-        OrderRepository.getOrdersByName(pharmacyName) { orders ->
+        val recyclerView: RecyclerView = rootView.findViewById(R.id.profile_rv)
+        //pharmacyName.trim()
+        OrderRepository.getOrdersByName("test") { orders ->
             prfileItems = orders
-            println(orders.size)
+            println("${orders.size} ${pharmacyName.trim().length}")
+            recyclerView.adapter = ProfileAdapter(prfileItems)
         }
 
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.profile_rv)
         val profileName:TextView = rootView.findViewById(R.id.Profile_name)
         profileName.text = userId
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = ProfileAdapter(prfileItems)
 
         return rootView
     }
