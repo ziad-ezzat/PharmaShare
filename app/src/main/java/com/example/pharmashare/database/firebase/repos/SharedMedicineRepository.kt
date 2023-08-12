@@ -10,33 +10,34 @@ object SharedMedicineRepository {
 
     // fun insert shared medicine into the database auto generated id (sharedMedicineId)
     fun insertSharedMedicine(sharedMedicine: SharedMedicine, callback: (Boolean) -> Unit) {
-        val sharedMedicineId = database.getReference("sharedMedicines").push().key ?: ""
-        val newSharedMedicine = SharedMedicine(sharedMedicineId, sharedMedicine.pharmacyName, sharedMedicine.medicineName, sharedMedicine.quantity, sharedMedicine.expiredDate, sharedMedicine.price)
+        val sharedMedicineId = usersRef.push().key ?: ""
+        val newSharedMedicine = SharedMedicine(sharedMedicineId, sharedMedicine.userId, sharedMedicine.pharmacyName, sharedMedicine.medicineName, sharedMedicine.quantity, sharedMedicine.expiredDate, sharedMedicine.price)
 
-        database.getReference("sharedMedicines").child(sharedMedicineId).setValue(newSharedMedicine)
+        usersRef.child(sharedMedicineId).setValue(newSharedMedicine)
             .addOnCompleteListener { createSharedMedicineTask ->
                 if (createSharedMedicineTask.isSuccessful) {
                     callback(true) // Success
                 } else {
-                    callback(false) // Handle shared medicine creation failure
+                    callback(false)
                 }
             }
     }
 
 
-    // return all shared medicines where pharmacyId != id as a list
+    // get all shared medicines from the database where userID != current user id
     fun getAllSharedMedicines(id: String, callback: (List<SharedMedicine>) -> Unit) {
         val sharedMedicines = mutableListOf<SharedMedicine>()
         usersRef.get().addOnSuccessListener { sharedMedicinesSnapshot ->
             sharedMedicinesSnapshot.children.forEach { sharedMedicineSnapshot ->
                 val sharedMedicine = sharedMedicineSnapshot.getValue(SharedMedicine::class.java)
-                if (sharedMedicine != null && sharedMedicine.pharmacyName != id) {
+                if (sharedMedicine != null && sharedMedicine.userId != id) {
                     sharedMedicines.add(sharedMedicine)
                 }
             }
             callback(sharedMedicines)
         }
     }
+
 
     // remove shared medicine
     fun removeSharedMedicine(id: String) {
@@ -52,6 +53,4 @@ object SharedMedicineRepository {
     fun decreaseSharedMedicineQuantity(id: String, quantity: Int) {
         usersRef.child(id).child("quantity").setValue(quantity - 1)
     }
-
-
 }

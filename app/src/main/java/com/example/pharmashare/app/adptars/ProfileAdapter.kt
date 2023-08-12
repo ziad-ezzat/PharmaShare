@@ -26,7 +26,7 @@ class ProfileAdapter(private val profileItems: List<Order>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val profileItem = profileItems[position]
-        holder.pharmacyName.text = profileItem.pharmacyName
+        holder.pharmacyName.text = profileItem.currentUserId
         holder.orderPrice.text = profileItem.totalPrice.toString()
         holder.orderDate.text = profileItem.orderDate
         holder.orderDetails.text = profileItem.orderDetails

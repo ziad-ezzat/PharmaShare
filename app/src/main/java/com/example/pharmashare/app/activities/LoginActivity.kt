@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pharmashare.R
 import com.example.pharmashare.database.firebase.repos.UserRepository
-import com.example.pharmashare.app.fragments.HomeActivity
 
 class LoginActivity : AppCompatActivity() {
 

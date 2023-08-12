@@ -1,6 +1,7 @@
 package com.example.pharmashare.app.adptars
 
 import android.app.AlertDialog
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pharmashare.R
+import com.example.pharmashare.database.firebase.repos.PharmacyRepository
 import com.example.pharmashare.database.objects.SharedMedicine
 
 class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val homeListener: HomeListener) :
@@ -40,11 +42,15 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
 
         holder.addToCartBtn.setOnClickListener {
             val sharedMedicine = sharedMedicines[position]
+            var pharmacyId = ""
+            PharmacyRepository.getPharmacyIdByName(sharedMedicine.pharmacyName) { pharmacy ->
+                pharmacyId = pharmacy.replace("-", "") // Remove the hyphen
+            }
             val dialog = AlertDialog.Builder(holder.itemView.context)
                 .setTitle("Choose Quantity")
                 .setItems((1..sharedMedicine.quantity).map { it.toString() }.toTypedArray()) { _, which ->
                     val selectedQuantity = which + 1
-                    homeListener.addToCart(sharedMedicine, selectedQuantity,sharedMedicine.price)
+                    homeListener.addToCart(sharedMedicine, selectedQuantity,sharedMedicine.price,pharmacyId)
                 }
                 .setNegativeButton("Cancel", null)
                 .create()
@@ -54,6 +60,6 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
     }
 
     interface HomeListener {
-        fun addToCart(sharedMedicine: SharedMedicine, selectedQuantity: Int, price:Double)
+        fun addToCart(sharedMedicine: SharedMedicine, selectedQuantity: Int, price:Double,pharmacyId: String)
     }
 }

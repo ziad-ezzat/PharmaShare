@@ -24,5 +24,11 @@ interface CartRepo {
     @Query("select * from cart_table where pharmacyId = :pharmacyID group BY price")
     fun getAllDateByPharmacyIdWithRoom(pharmacyID:String):MutableList<Cart>
 
+    // delete all data from cart_table
+    @Query("DELETE FROM cart_table")
+    fun deleteAll()
 
+    // get all data from cart_table
+    @Query("SELECT * FROM cart_table")
+    fun getAll(): List<Cart>
 }

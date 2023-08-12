@@ -86,6 +86,7 @@ class AddFragment : Fragment() {
         val selectedPharmacy = pharmacySpinner.selectedItem as? String
         val quantity = quantityEditText.text.toString()
         val price = priceEditText.text.toString()
+        val userId = UserRepository.getCurrentUserId()
 
         if (selectedMedicine.isNullOrEmpty() || selectedPharmacy.isNullOrEmpty()) {
             Toast.makeText(requireContext(), "Please select a medicine and a pharmacy", Toast.LENGTH_SHORT).show()
@@ -94,11 +95,12 @@ class AddFragment : Fragment() {
 
         val sharedMedicine = SharedMedicine(
             id = "",
+            userId = userId,
             medicineName = selectedMedicine,
             pharmacyName = selectedPharmacy,
             quantity = quantity.toIntOrNull() ?: 0,
             price = price.toDoubleOrNull() ?: 0.0,
-            expiredDate = calendarTextView.text.toString()
+            expiredDate = calendarTextView.text.toString(),
         )
 
         sharedMedicineRepository.insertSharedMedicine(sharedMedicine) { isSuccess ->

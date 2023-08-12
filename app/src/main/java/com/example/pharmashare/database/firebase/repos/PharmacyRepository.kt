@@ -51,30 +51,15 @@ object PharmacyRepository {
         getPharmaciesWithFilter({ true }, callback)
     }
 
-    // Get pharmacy by name
-    fun getPharmacyByName(name: String, callback: (Pharmacy?) -> Unit) {
+    // return pharmacy id by name
+    fun getPharmacyIdByName(name: String, callback: (String) -> Unit) {
         pharmaciesRef.get().addOnSuccessListener { pharmaciesSnapshot ->
             pharmaciesSnapshot.children.forEach { pharmacySnapshot ->
                 val pharmacy = pharmacySnapshot.getValue(Pharmacy::class.java)
                 if (pharmacy != null && pharmacy.name == name) {
-                    callback(pharmacy)
-                    return@addOnSuccessListener
+                    callback(pharmacy.id)
                 }
             }
-            callback(null)
         }
     }
-
-    // Get pharmacy id by name
-    suspend fun getPharmacyIdByName(name: String): String? {
-        val pharmaciesSnapshot = pharmaciesRef.get().await()
-        pharmaciesSnapshot.children.forEach { pharmacySnapshot ->
-            val pharmacy = pharmacySnapshot.getValue(Pharmacy::class.java)
-            if (pharmacy != null && pharmacy.name == name) {
-                return pharmacy.id
-            }
-        }
-        return null
-    }
-
 }

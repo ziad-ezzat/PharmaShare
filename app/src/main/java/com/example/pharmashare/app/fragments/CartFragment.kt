@@ -42,40 +42,17 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
         recyclerView = rootView.findViewById(R.id.order_recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         // Database Dac
-        val database =
-            Room.databaseBuilder(container!!.context, MyRoomDatabase::class.java, "myDataBase")
-                .allowMainThreadQueries().build()
+        val database = MyRoomDatabase.buildDatabase(context!!)
         val dao = database.cartDao()
 
         val userId = UserRepository.getCurrentUserId()
-        var pharmacyName = ""
-        PharmacyRepository.getAllPharmaciesByOwnerId(userId) { pharmacyList ->
-            pharmacyList.forEach {
-                pharmacyName += it.name + "\n"
-                println("$pharmacyName name ${it.name}")
-            }
-        }
+
         orderAdapter = CartAdapter(mutableListOf(), this)
         recyclerView.adapter = orderAdapter
-//        CartRepository.getCarts("NbFvwsXIUquhBsJLvRE") { cartItems ->
-//            orderAdapter = OrderAdapter(cartItems as MutableList<Cart>, this)
-//            recyclerView.adapter = orderAdapter
-//            Log.d("orders", orderAdapter.getAllDate().toString())
-//            orderAdapter.getAllDate().forEach {
-//                items.add(
-//                    Details(
-//                        medicine = it.medicine,
-//                        quantity = it.quantity,
-//                        price = it.priceTotal
-//                    )
-//                )
-//            }
-//        }
-        cartItems = dao.getAllDateByPharmacyIdWithRoom("NbFvwsXIUquhBsJLvRE")
-        Log.d("size", "${cartItems.size} size1")
+
+        cartItems = dao.getAll() as MutableList<Cart>
         orderAdapter = CartAdapter(cartItems, this)
         recyclerView.adapter = orderAdapter
-        Log.d("orders", orderAdapter.getAllDate().toString())
         orderAdapter.getAllDate().forEach {
             items.add(
                 Details(
@@ -87,25 +64,20 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
         }
         val dateFormat = DateFormat.getDateInstance()
         btnDone.setOnClickListener {
-            Log.d("name", "${pharmacyName.trim().length} name $userId")
             val order = Order(
-                "Temp ${Random.nextInt(100)}",
-                //pharmacyName.trim(),
-                "test",
-                dateFormat.format(Date()).format("YYYY/MM/dd"),
+               id = "temp",
+                currentUserId = userId,
+                orderDate = dateFormat.format(Date()).format("YYYY/MM/dd"),
                 totalPrice = totalPrice.text.toString().toDouble(),
-                items.toString(),
-                "done"
-            )
+                orderDetails = items.toString(),
+               status = "done"
+           )
             OrderRepository.insertOrder(order) {
                 Log.d("done", "$it")
             }
-
-//            CartRepository.removeCart(cart = Cart("", "Temp", "", 0, 0.0, 0.0,0)) {}
-            dao.deleteListByRoom(cartItems)
-            cartItems = dao.getAllDateByPharmacyIdWithRoom("NbFvwsXIUquhBsJLvRE")
-            Log.d("size", "${cartItems.size} size")
-            orderAdapter = CartAdapter(cartItems,this)
+            dao.deleteAll()
+            cartItems = dao.getAll() as MutableList<Cart>
+            orderAdapter = CartAdapter(cartItems, this)
             recyclerView.adapter = orderAdapter
         }
 

@@ -12,7 +12,7 @@ object OrderRepository {
     // insert a new order into the database auto generated id
     fun insertOrder(order: Order, callback: (Boolean) -> Unit) {
         val orderId = database.getReference("orders").push().key ?: ""
-        val newOrder = Order(orderId, order.pharmacyName, order.orderDate, order.totalPrice, order.orderDetails, order.status)
+        val newOrder = Order(orderId, order.currentUserId, order.orderDate, order.totalPrice, order.orderDetails, order.status)
 
         database.getReference("orders").child(orderId).setValue(newOrder)
             .addOnCompleteListener { createOrderTask ->
@@ -30,7 +30,7 @@ object OrderRepository {
         usersRef.get().addOnSuccessListener { ordersSnapshot ->
             ordersSnapshot.children.forEach { orderSnapshot ->
                 val order = orderSnapshot.getValue(Order::class.java)
-                if (order != null && order.pharmacyName == id) {
+                if (order != null && order.currentUserId == id) {
                     orders.add(order)
                 }
             }
@@ -44,7 +44,7 @@ object OrderRepository {
         usersRef.get().addOnSuccessListener { ordersSnapshot ->
             ordersSnapshot.children.forEach { orderSnapshot ->
                 val order = orderSnapshot.getValue(Order::class.java)
-                if (order != null && order.pharmacyName == name) {
+                if (order != null && order.currentUserId == name) {
                     orders.add(order)
                 }
             }
@@ -63,6 +63,20 @@ object OrderRepository {
                     callback(false) // Handle order remove failure
                 }
             }
+    }
+
+    // get all orders from database that userCurrentId = id
+    fun getAllOrdersByUserId(id: String, callback: (ArrayList<Order>) -> Unit) {
+        val orders = ArrayList<Order>()
+        usersRef.get().addOnSuccessListener { ordersSnapshot ->
+            ordersSnapshot.children.forEach { orderSnapshot ->
+                val order = orderSnapshot.getValue(Order::class.java)
+                if (order != null && order.currentUserId == id) {
+                    orders.add(order)
+                }
+            }
+            callback(orders)
+        }
     }
 
 }

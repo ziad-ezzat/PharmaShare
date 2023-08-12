@@ -18,7 +18,7 @@
             android:name=".app.activities.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".app.fragments.HomeActivity"
+            android:name=".app.activities.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".app.activities.SplashActivity"

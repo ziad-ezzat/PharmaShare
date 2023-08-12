@@ -1,4 +1,4 @@
-package com.example.pharmashare.app.fragments
+package com.example.pharmashare.app.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.pharmashare.app.activities.LoginActivity
 import com.example.pharmashare.R
+import com.example.pharmashare.app.fragments.AddFragment
+import com.example.pharmashare.app.fragments.CartFragment
+import com.example.pharmashare.app.fragments.HomeFragment
+import com.example.pharmashare.app.fragments.ProfileFragment
 import com.example.pharmashare.databinding.ActivityHomeBinding
 import com.example.pharmashare.database.firebase.repos.UserRepository
 

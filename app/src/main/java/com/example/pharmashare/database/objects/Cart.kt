@@ -12,6 +12,5 @@ data class Cart(
     var quantity: Int = 0,
     val price: Double = 0.0,
     var priceTotal: Double = 0.0,
-    var availableQuantity:Int = 0,
-    var discountPercentage:Double
+    var availableQuantity:Int = 0
 )

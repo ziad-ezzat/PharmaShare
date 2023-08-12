@@ -28,9 +28,6 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
     }
 
     fun getAllDate(): MutableList<Cart> = cartItems
-    fun getTotalLiveData(): LiveData<Double> {
-        return totalLiveData
-    }
 
     private fun calculateTotalPrice() {
         var total = 0.0
@@ -52,8 +49,7 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.ordercard, parent, false)
-        database = Room.databaseBuilder(parent.context, MyRoomDatabase::class.java, "myDataBase")
-            .allowMainThreadQueries().build()
+        database = MyRoomDatabase.buildDatabase(parent.context)
         return ViewHolder(view)
     }
 

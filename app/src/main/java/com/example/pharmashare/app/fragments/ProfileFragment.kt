@@ -34,10 +34,11 @@ class ProfileFragment : Fragment() {
 
         // Fetch pharmacy names and set them to the pharmacyNameTV TextView
         PharmacyRepository.getAllPharmaciesByOwnerId(userId) { pharmacyList ->
-            val pharmacyNames = pharmacyList.joinToString("\n") { it.name }
-            pharmacyNameTV.text = pharmacyNames
+            val pharmacyNames = pharmacyList.joinToString("\n") { it.name}
+            val pharmacyAddress = pharmacyList.joinToString("\n") { it.address}
+            pharmacyNameTV.text = pharmacyNames + "\n" + pharmacyAddress
             // Once pharmacy names are fetched, fetch the orders for these pharmacies
-            fetchOrdersForPharmacies("se7a", recyclerView)
+            fetchOrdersForPharmacies(userId, recyclerView)
         }
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -45,8 +46,8 @@ class ProfileFragment : Fragment() {
         return rootView
     }
 
-    private fun fetchOrdersForPharmacies(pharmacyNames: String, recyclerView: RecyclerView) {
-        OrderRepository.getOrdersByName(pharmacyNames) { orders ->
+    private fun fetchOrdersForPharmacies(userCurrentId: String, recyclerView: RecyclerView) {
+        OrderRepository.getAllOrdersByUserId(userCurrentId) { orders ->
             recyclerView.adapter = ProfileAdapter(orders)
         }
     }
