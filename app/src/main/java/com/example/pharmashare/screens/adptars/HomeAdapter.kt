@@ -46,7 +46,7 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
                 .setTitle("Choose Quantity")
                 .setItems((1..sharedMedicine.quantity).map { it.toString() }.toTypedArray()) { _, which ->
                     val selectedQuantity = which + 1
-                    homeListener?.addToCart(sharedMedicine, selectedQuantity,sharedMedicine.price)
+                    homeListener.addToCart(sharedMedicine, selectedQuantity,sharedMedicine.price)
                 }
                 .setNegativeButton("Cancel", null)
                 .create()

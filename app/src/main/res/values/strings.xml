@@ -24,4 +24,6 @@
     <string name="fragment_add_medicine">AddMedicine</string>
     <string name="plus">plus</string>
     <string name="minus">minus</string>
+    <string name="errorMassageOverExceeded">you exceeded available quantity</string>
+    <string name="errorMassageUnderOneUnit">you must have one unit</string>
 </resources>

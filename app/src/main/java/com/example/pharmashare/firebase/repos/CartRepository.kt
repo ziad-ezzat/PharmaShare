@@ -1,5 +1,7 @@
 package com.example.pharmashare.firebase.repos
 
+import androidx.room.Dao
+import androidx.room.Insert
 import com.example.pharmashare.firebase.objects.Cart
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -11,7 +13,7 @@ object CartRepository {
     // insert a new cart into the database auto generated id
     fun insertCart(cart: Cart, callback: (Boolean) -> Unit) {
         val cartId = database.getReference("cart").push().key ?: ""
-        val newCart = Cart(cartId, cart.pharmacyId, cart.medicine, cart.quantity, cart.price, cart.priceTotal)
+        val newCart = Cart(cartId.toInt(), cart.pharmacyId, cart.medicine, cart.quantity, cart.price, cart.priceTotal,cart.availableQuantity,cart.discountPercentage)
 
         database.getReference("cart").child(cartId).setValue(newCart)
             .addOnCompleteListener { createCartTask ->
@@ -40,9 +42,9 @@ object CartRepository {
     // update cart quantity and priceTotal
     fun updateCart(cart: Cart, callback: (Boolean) -> Unit) {
         val cartId = cart.id
-        val newCart = Cart(cartId, cart.pharmacyId, cart.medicine, cart.quantity, cart.price, cart.priceTotal)
+        val newCart = Cart(cartId, cart.pharmacyId, cart.medicine, cart.quantity, cart.price, cart.priceTotal,cart.availableQuantity,cart.discountPercentage)
 
-        database.getReference("cart").child(cartId).setValue(newCart)
+        database.getReference("cart").child(cartId.toInt().toString()).setValue(newCart)
             .addOnCompleteListener { updateCartTask ->
                 if (updateCartTask.isSuccessful) {
                     callback(true) // Success
@@ -55,7 +57,7 @@ object CartRepository {
     // remove cart from database
     fun removeCart(cart: Cart, callback: (Boolean) -> Unit) {
         val cartId = cart.id
-        database.getReference("cart").child(cartId).removeValue()
+        database.getReference("cart").child(cartId.toInt().toString()).removeValue()
             .addOnCompleteListener { removeCartTask ->
                 if (removeCartTask.isSuccessful) {
                     callback(true) // Success
