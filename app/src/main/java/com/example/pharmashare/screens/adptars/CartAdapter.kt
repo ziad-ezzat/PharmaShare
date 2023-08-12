@@ -13,8 +13,8 @@ import com.example.pharmashare.R
 import com.example.pharmashare.firebase.objects.Cart
 import com.google.firebase.database.FirebaseDatabase
 
-class OrderAdapter(private val cartItems: MutableList<Cart>,resultBack: ResultBack) :
-    RecyclerView.Adapter<OrderAdapter.ViewHolder>() {
+class CartAdapter(private val cartItems: MutableList<Cart>,resultBack: ResultBack) :
+    RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
     private val totalLiveData = MutableLiveData<Double>()
     private val resultBack:ResultBack = resultBack
@@ -29,7 +29,7 @@ class OrderAdapter(private val cartItems: MutableList<Cart>,resultBack: ResultBa
     private fun calculateTotalPrice() {
         var total = 0.0
         cartItems.forEach {
-           total += it.priceTotal
+            total += it.priceTotal
         }
         totalLiveData.value = total
         resultBack.backPrice(total)

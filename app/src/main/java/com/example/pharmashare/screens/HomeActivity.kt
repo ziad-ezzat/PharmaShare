@@ -41,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.home_frame, fragment).commit()
                 }
                 R.id.menu_order -> {
-                    val fragment = OrderFragment()
+                    val fragment = CartFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.home_frame, fragment).commit()
                 }
                 R.id.main_Logout -> {

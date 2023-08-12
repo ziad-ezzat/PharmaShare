@@ -106,6 +106,15 @@ object UserRepository {
         }
     }
 
+    // Get the current user name
+    fun getCurrentUserName(callback: (String) -> Unit) {
+        val userId = getCurrentUserId()
+        usersRef.child(userId).get().addOnSuccessListener { userSnapshot ->
+            val user = userSnapshot.getValue(User::class.java)
+            callback(user?.username ?: "")
+        }
+    }
+
     // Calculate the subscription date by adding 10 days to the current date
     private fun calculateSubscriptionDate(): String {
         val sdf = SimpleDateFormat("dd/M/yyyy")

@@ -17,14 +17,14 @@ import com.example.pharmashare.firebase.repos.CartRepository
 import com.example.pharmashare.firebase.repos.OrderRepository
 import com.example.pharmashare.firebase.repos.PharmacyRepository
 import com.example.pharmashare.firebase.repos.UserRepository
-import com.example.pharmashare.screens.adptars.OrderAdapter
+import com.example.pharmashare.screens.adptars.CartAdapter
 import java.text.DateFormat
 import java.util.Date
 
-class OrderFragment : Fragment(), OrderAdapter.ResultBack {
+class CartFragment : Fragment(), CartAdapter.ResultBack {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var orderAdapter: OrderAdapter
+    private lateinit var orderAdapter: CartAdapter
     lateinit var totalprice: TextView
     var Items: MutableList<Details> = mutableListOf()
     override fun onCreateView(
@@ -48,10 +48,10 @@ class OrderFragment : Fragment(), OrderAdapter.ResultBack {
                 println("$pharmacyName name ${it.name}")
             }
         }
-        orderAdapter = OrderAdapter(mutableListOf(), this)
+        orderAdapter = CartAdapter(mutableListOf(), this)
         recyclerView.adapter = orderAdapter
         CartRepository.getCarts("NbFvwsXIUquhBsJLvRE") { cartItems ->
-            orderAdapter = OrderAdapter(cartItems as MutableList<Cart>, this)
+            orderAdapter = CartAdapter(cartItems as MutableList<Cart>, this)
             recyclerView.adapter = orderAdapter
             Log.d("orders", orderAdapter.getAllDate().toString())
             orderAdapter.getAllDate().forEach {

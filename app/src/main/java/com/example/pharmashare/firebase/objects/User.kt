@@ -5,6 +5,6 @@ data class User(
     val username: String = "",
     val phoneNumber: String = "",
     val password: String = "",
-    val subscription: String, // Date like 8/4/2023
+    val subscription: String = "" // Date like 8/4/2023
 )
 
