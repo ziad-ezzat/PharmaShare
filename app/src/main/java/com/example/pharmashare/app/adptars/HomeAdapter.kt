@@ -22,6 +22,8 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
         val medQuantityTv: TextView = itemView.findViewById(R.id.med_quantity)
         val medPriceTv: TextView = itemView.findViewById(R.id.med_price)
         val addToCartBtn: Button = itemView.findViewById(R.id.med_makeOrder)
+        val discountTv: TextView = itemView.findViewById(R.id.discount)
+        val discountPriceTv: TextView = itemView.findViewById(R.id.priceAfterDiscount)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -39,6 +41,9 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
         holder.expiredDateTv.text = sharedMedicine.expiredDate
         holder.medQuantityTv.text = "Quantity: ${sharedMedicine.quantity}"
         holder.medPriceTv.text = "Price: $${sharedMedicine.price}"
+        holder.discountTv.text = "Discount: ${sharedMedicine.discount}%"
+        holder.discountPriceTv.text = "Price After Discount: $${sharedMedicine.priceAfterDiscount}"
+
 
         holder.addToCartBtn.setOnClickListener {
             val sharedMedicine = sharedMedicines[position]
@@ -50,7 +55,7 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
                 .setTitle("Choose Quantity")
                 .setItems((1..sharedMedicine.quantity).map { it.toString() }.toTypedArray()) { _, which ->
                     val selectedQuantity = which + 1
-                    homeListener.addToCart(sharedMedicine, selectedQuantity,sharedMedicine.price,pharmacyId)
+                    homeListener.addToCart(sharedMedicine, selectedQuantity,sharedMedicine.priceAfterDiscount,pharmacyId)
                 }
                 .setNegativeButton("Cancel", null)
                 .create()

@@ -13,12 +13,38 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
     <TextView
         android:id="@+id/med_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Medicine Name"
         android:textSize="16sp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/med_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Old Price: $0"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/expired_date"
@@ -27,12 +53,26 @@
         android:text="Expired Date"
         android:textSize="14sp" />
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="discount: 0"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical">
-
 
         <TextView
             android:id="@+id/med_quantity"
@@ -47,10 +87,10 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/med_price"
+            android:id="@+id/priceAfterDiscount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Price: $0"
+            android:text="New Price: 0"
             android:textSize="14sp" />
 
     </LinearLayout>

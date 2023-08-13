@@ -11,7 +11,7 @@ object SharedMedicineRepository {
     // fun insert shared medicine into the database auto generated id (sharedMedicineId)
     fun insertSharedMedicine(sharedMedicine: SharedMedicine, callback: (Boolean) -> Unit) {
         val sharedMedicineId = usersRef.push().key ?: ""
-        val newSharedMedicine = SharedMedicine(sharedMedicineId, sharedMedicine.userId, sharedMedicine.pharmacyName, sharedMedicine.medicineName, sharedMedicine.quantity, sharedMedicine.expiredDate, sharedMedicine.price)
+        val newSharedMedicine = SharedMedicine(sharedMedicineId, sharedMedicine.userId, sharedMedicine.pharmacyName, sharedMedicine.medicineName, sharedMedicine.quantity, sharedMedicine.expiredDate, sharedMedicine.price, sharedMedicine.discount, sharedMedicine.priceAfterDiscount)
 
         usersRef.child(sharedMedicineId).setValue(newSharedMedicine)
             .addOnCompleteListener { createSharedMedicineTask ->
