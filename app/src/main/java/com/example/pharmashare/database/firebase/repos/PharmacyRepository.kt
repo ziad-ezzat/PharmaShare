@@ -61,4 +61,16 @@ object PharmacyRepository {
             }
         }
     }
+
+    // return pharmacy address by name
+    fun getPharmacyAddressByName(name: String, callback: (String) -> Unit) {
+        pharmaciesRef.get().addOnSuccessListener { pharmaciesSnapshot ->
+            pharmaciesSnapshot.children.forEach { pharmacySnapshot ->
+                val pharmacy = pharmacySnapshot.getValue(Pharmacy::class.java)
+                if (pharmacy != null && pharmacy.name == name) {
+                    callback(pharmacy.address)
+                }
+            }
+        }
+    }
 }

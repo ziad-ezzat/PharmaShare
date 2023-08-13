@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pharmashare.R
 import com.example.pharmashare.database.firebase.repos.PharmacyRepository
+import com.example.pharmashare.database.firebase.repos.SharedMedicineRepository
 import com.example.pharmashare.database.objects.SharedMedicine
 
 class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val homeListener: HomeListener) :
@@ -24,6 +25,7 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
         val addToCartBtn: Button = itemView.findViewById(R.id.med_makeOrder)
         val discountTv: TextView = itemView.findViewById(R.id.discount)
         val discountPriceTv: TextView = itemView.findViewById(R.id.priceAfterDiscount)
+        val pharmacyAddressTv: TextView = itemView.findViewById(R.id.address)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -37,6 +39,9 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
         val sharedMedicine = sharedMedicines[position]
 
         holder.pharmacyNameTv.text = sharedMedicine.pharmacyName
+        PharmacyRepository.getPharmacyAddressByName(sharedMedicine.pharmacyName) { pharmacy ->
+            holder.pharmacyAddressTv.text = pharmacy
+        }
         holder.medNameTv.text = sharedMedicine.medicineName
         holder.expiredDateTv.text = sharedMedicine.expiredDate
         holder.medQuantityTv.text = "Quantity: ${sharedMedicine.quantity}"
