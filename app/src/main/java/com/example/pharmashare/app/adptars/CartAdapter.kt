@@ -1,5 +1,6 @@
 package com.example.pharmashare.app.adptars
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +54,7 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
         return ViewHolder(view)
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cartItem = cartItems[position]
         holder.medicineName.text = cartItem.medicine
@@ -97,9 +99,10 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
             } else if (cartItem.quantity == 1 && it.isPressed) {
                 Toast.makeText(
                     holder.itemView.context,
-                    "you must have one unit",
+                    "deleted item",
                     Toast.LENGTH_SHORT
                 ).show()
+                resultBack.deleteItemFromCart(cartItem)
             }
         }
 
@@ -107,7 +110,6 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
 
     private fun updateCartItem(cartItem: Cart) {
         dao.updateByRoom(cartItem)
-
     }
 
     override fun getItemCount(): Int {
@@ -117,7 +119,7 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
     interface ResultBack {
         fun backPrice(totalPrice: Double)
         fun checkItIsAvailable(available: Boolean)
+        fun deleteItemFromCart(cartItem: Cart)
     }
-
 
 }
