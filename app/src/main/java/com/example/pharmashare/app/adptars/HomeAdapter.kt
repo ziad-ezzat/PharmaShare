@@ -59,9 +59,15 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
                 .setTitle("Choose Quantity")
                 .setItems((1..sharedMedicine.quantity).map { it.toString() }.toTypedArray()) { _, which ->
                     val selectedQuantity = which + 1
-                    homeListener.addToCart(sharedMedicine, selectedQuantity,sharedMedicine.priceAfterDiscount,pharmacyId)
-                    SharedMedicineRepository.updateSharedMedicineQuantity(sharedMedicine.id, sharedMedicine.quantity - selectedQuantity)
-                    holder.medQuantityTv.text = "Quantity: ${sharedMedicine.quantity - selectedQuantity}"
+                    val check = homeListener.addToCart(sharedMedicine, selectedQuantity,sharedMedicine.priceAfterDiscount,pharmacyId)
+                    if (check)
+                    {
+                        SharedMedicineRepository.updateSharedMedicineQuantity(sharedMedicine.id, sharedMedicine.quantity - selectedQuantity)
+                        holder.medQuantityTv.text = "Quantity: ${sharedMedicine.quantity - selectedQuantity}"
+                        sharedMedicine.quantity -= selectedQuantity
+                    }
+                    else
+                    { }
                 }
                 .setNegativeButton("Cancel", null)
                 .create()
@@ -71,6 +77,6 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
     }
 
     interface HomeListener {
-        fun addToCart(sharedMedicine: SharedMedicine, selectedQuantity: Int, price:Double,pharmacyId: String)
+        fun addToCart(sharedMedicine: SharedMedicine, selectedQuantity: Int, price:Double,pharmacyId: String): Boolean
     }
 }

@@ -44,18 +44,33 @@ object SharedMedicineRepository {
         usersRef.child(id).removeValue()
     }
 
-    // increase shared medicine quantity
-    fun increaseSharedMedicineQuantity(id: String, quantity: Int) {
-        usersRef.child(id).child("quantity").setValue(quantity + 1)
+    // increase shared medicine by just id
+    fun increaseSharedMedicineQuantity(id: String) {
+        usersRef.child(id).child("quantity").get().addOnSuccessListener { quantitySnapshot ->
+            val quantity = quantitySnapshot.value as Long
+            usersRef.child(id).child("quantity").setValue(quantity + 1)
+        }
     }
 
-    // decrease shared medicine quantity
-    fun decreaseSharedMedicineQuantity(id: String, quantity: Int) {
-        usersRef.child(id).child("quantity").setValue(quantity - 1)
+
+    // decrease shared medicine by just id
+    fun decreaseSharedMedicineQuantity(id: String) {
+        usersRef.child(id).child("quantity").get().addOnSuccessListener { quantitySnapshot ->
+            val quantity = quantitySnapshot.value as Long
+            usersRef.child(id).child("quantity").setValue(quantity - 1)
+        }
     }
 
     // update shared medicine quantity
     fun updateSharedMedicineQuantity(id: String, quantity: Int) {
         usersRef.child(id).child("quantity").setValue(quantity)
+    }
+
+    // get shared medicine quantity
+    fun getSharedMedicineQuantity(id: String, callback: (Int) -> Unit) {
+        usersRef.child(id).child("quantity").get().addOnSuccessListener { quantitySnapshot ->
+            val quantity = quantitySnapshot.value as Long
+            callback(quantity.toInt())
+        }
     }
 }

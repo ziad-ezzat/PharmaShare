@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -48,15 +49,26 @@ class HomeFragment : Fragment(), HomeAdapter.HomeListener {
 
         return rootView
     }
-    override fun addToCart(sharedMedicine: SharedMedicine, selectedQuantity: Int, price: Double,pharmacyId: String) {
+    override fun addToCart(sharedMedicine: SharedMedicine, selectedQuantity: Int, price: Double,pharmacyId: String): Boolean {
         val cart = Cart(
             pharmacyId = pharmacyId,
             medicine = sharedMedicine.medicineName,
             quantity = selectedQuantity,
             price = price,
             priceTotal = selectedQuantity * price,
-            availableQuantity = sharedMedicine.quantity
+            availableQuantity = sharedMedicine.quantity,
+            sharedMedicineId = sharedMedicine.id
         )
-        dao.insertByRoom(cart)
+        // check if medicine exist in cart if yes show message else add it
+        val cartItem = dao.checkIfMedicineExist(sharedMedicineId = sharedMedicine.id)
+            if (cartItem == null) {
+                dao.insertByRoom(cart)
+                return true
+            } else {
+                Toast.makeText(context, "This medicine already exist in cart", Toast.LENGTH_SHORT)
+                    .show()
+                return false
+            }
+        return true
     }
 }

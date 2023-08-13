@@ -22,4 +22,11 @@ interface CartRepo {
     // get all data from cart_table
     @Query("SELECT * FROM cart_table")
     fun getAll(): List<Cart>
+
+    @Delete
+    fun deleteItemByRoom(cart: Cart)
+
+    // check if the cart item exist in cart_table
+    @Query("SELECT * FROM cart_table WHERE sharedMedicineId = :sharedMedicineId")
+    fun checkIfMedicineExist(sharedMedicineId: String): Cart?
 }

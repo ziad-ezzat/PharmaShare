@@ -9,18 +9,15 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.pharmashare.R
+import com.example.pharmashare.app.adptars.CartAdapter
+import com.example.pharmashare.database.firebase.repos.OrderRepository
+import com.example.pharmashare.database.firebase.repos.UserRepository
 import com.example.pharmashare.database.objects.Cart
 import com.example.pharmashare.database.objects.Order
-import com.example.pharmashare.database.firebase.repos.OrderRepository
-import com.example.pharmashare.database.firebase.repos.PharmacyRepository
-import com.example.pharmashare.database.firebase.repos.UserRepository
 import com.example.pharmashare.database.room.MyRoomDatabase
-import com.example.pharmashare.app.adptars.CartAdapter
 import java.text.DateFormat
 import java.util.Date
-import kotlin.random.Random
 
 class CartFragment : Fragment(), CartAdapter.ResultBack {
 
@@ -29,6 +26,15 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
     private lateinit var totalPrice: TextView
     private lateinit var cartItems: MutableList<Cart>
     private var items: MutableList<Details> = mutableListOf()
+
+    // Database Dac
+    val database by lazy {
+        MyRoomDatabase.buildDatabase(requireContext())
+    }
+    val dao by lazy {
+        database.cartDao()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,9 +47,7 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
 
         recyclerView = rootView.findViewById(R.id.order_recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        // Database Dac
-        val database = MyRoomDatabase.buildDatabase(context!!)
-        val dao = database.cartDao()
+
 
         val userId = UserRepository.getCurrentUserId()
 
@@ -65,13 +69,13 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
         val dateFormat = DateFormat.getDateInstance()
         btnDone.setOnClickListener {
             val order = Order(
-               id = "temp",
+                id = "temp",
                 currentUserId = userId,
                 orderDate = dateFormat.format(Date()).format("YYYY/MM/dd"),
                 totalPrice = totalPrice.text.toString().toDouble(),
                 orderDetails = items.toString(),
-               status = "done"
-           )
+                status = "done"
+            )
             OrderRepository.insertOrder(order) {
                 Log.d("done", "$it")
             }
@@ -90,6 +94,12 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
 
     override fun checkItIsAvailable(available: Boolean) {
         // if we want to clear medicine
+    }
+
+    override fun deleteItemFromCart(cartItem: Cart) {
+        dao.deleteItemByRoom(cartItem)
+        orderAdapter = CartAdapter(dao.getAll() as MutableList<Cart>,this)
+        recyclerView.adapter = orderAdapter
     }
 
     data class Details(
