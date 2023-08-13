@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pharmashare.R
 import com.example.pharmashare.app.fragments.AddFragment
@@ -66,16 +67,28 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.main_profile -> {
-                Toast.makeText(baseContext, "${item.title}", Toast.LENGTH_SHORT).show()
-            }
-
-            R.id.main_Logout -> {
-                UserRepository.logout()
-                Intent(this, LoginActivity::class.java).also {
+            R.id.main_AddPharmacy -> {
+                Intent(this, AddPharmacy::class.java).also {
                     startActivity(it)
                     finish()
                 }
+            }
+
+            R.id.main_Logout -> {
+                val alertDialogBuilder = AlertDialog.Builder(this)
+                alertDialogBuilder.setMessage("Are you sure you want to log out?")
+                    .setPositiveButton("Yes") { _, _ ->
+                        UserRepository.logout()
+                        Intent(this, LoginActivity::class.java).also {
+                            startActivity(it)
+                            finish()
+                        }
+                    }
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .create()
+                    .show()
             }
         }
         return true

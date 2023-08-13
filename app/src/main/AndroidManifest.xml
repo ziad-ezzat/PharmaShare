@@ -15,6 +15,9 @@
         android:theme="@style/Theme.PharmaShare"
         tools:targetApi="31">
         <activity
+            android:name=".app.activities.AddPharmacy"
+            android:exported="false" />
+        <activity
             android:name=".app.activities.RegisterActivity"
             android:exported="false" />
         <activity
