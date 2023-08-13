@@ -49,7 +49,6 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
         holder.discountTv.text = "Discount: ${sharedMedicine.discount}%"
         holder.discountPriceTv.text = "Price After Discount: $${sharedMedicine.priceAfterDiscount}"
 
-
         holder.addToCartBtn.setOnClickListener {
             val sharedMedicine = sharedMedicines[position]
             var pharmacyId = ""
@@ -61,6 +60,8 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
                 .setItems((1..sharedMedicine.quantity).map { it.toString() }.toTypedArray()) { _, which ->
                     val selectedQuantity = which + 1
                     homeListener.addToCart(sharedMedicine, selectedQuantity,sharedMedicine.priceAfterDiscount,pharmacyId)
+                    SharedMedicineRepository.updateSharedMedicineQuantity(sharedMedicine.id, sharedMedicine.quantity - selectedQuantity)
+                    holder.medQuantityTv.text = "Quantity: ${sharedMedicine.quantity - selectedQuantity}"
                 }
                 .setNegativeButton("Cancel", null)
                 .create()

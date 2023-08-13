@@ -53,4 +53,9 @@ object SharedMedicineRepository {
     fun decreaseSharedMedicineQuantity(id: String, quantity: Int) {
         usersRef.child(id).child("quantity").setValue(quantity - 1)
     }
+
+    // update shared medicine quantity
+    fun updateSharedMedicineQuantity(id: String, quantity: Int) {
+        usersRef.child(id).child("quantity").setValue(quantity)
+    }
 }
