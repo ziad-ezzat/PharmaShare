@@ -11,26 +11,22 @@ import com.example.pharmashare.R
 import com.example.pharmashare.database.firebase.repos.PharmacyRepository
 
 class AddPharmacy : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pharmacy)
 
         val addPharmacyBtn = findViewById<Button>(R.id.buttonAddPharmacy)
         val spinnerCity = findViewById<Spinner>(R.id.spinnerCity)
-        val PharmacyAddressIndetails = findViewById<EditText>(R.id.PharmacyAddressIndetails)
-        val PharmacyName = findViewById<EditText>(R.id.editTextPharmacyName)
+        val pharmacyAddressDetails = findViewById<EditText>(R.id.PharmacyAddressIndetails)
+        val pharmacyName = findViewById<EditText>(R.id.editTextPharmacyName)
 
         addPharmacyBtn.setOnClickListener {
-            val pharmacyName = PharmacyName.text.toString().trim()
-            val pharmacyAddress = PharmacyAddressIndetails.text.toString().trim()
+            val pharmacyName = pharmacyName.text.toString().trim()
+            val pharmacyAddress = pharmacyAddressDetails.text.toString().trim()
 
-            if (pharmacyName.isEmpty()) {
-                PharmacyName.error = "Pharmacy name cannot be empty"
-                return@setOnClickListener
-            }
-
-            if (pharmacyAddress.isEmpty()) {
-                PharmacyAddressIndetails.error = "Pharmacy address cannot be empty"
+            if (pharmacyName.isEmpty() || pharmacyAddress.isEmpty()) {
+                Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

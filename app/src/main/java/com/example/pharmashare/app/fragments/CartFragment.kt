@@ -68,6 +68,9 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
         }
         val dateFormat = DateFormat.getDateInstance()
         btnDone.setOnClickListener {
+            if (cartItems.isEmpty()) {
+                return@setOnClickListener
+            }
             val order = Order(
                 id = "temp",
                 currentUserId = userId,

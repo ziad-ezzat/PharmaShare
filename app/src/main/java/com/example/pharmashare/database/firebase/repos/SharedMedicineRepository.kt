@@ -66,11 +66,35 @@ object SharedMedicineRepository {
         usersRef.child(id).child("quantity").setValue(quantity)
     }
 
-    // get shared medicine quantity
+    // get shared medicine quantity by id return Quantity
     fun getSharedMedicineQuantity(id: String, callback: (Int) -> Unit) {
         usersRef.child(id).child("quantity").get().addOnSuccessListener { quantitySnapshot ->
             val quantity = quantitySnapshot.value as Long
             callback(quantity.toInt())
+        }
+    }
+
+    // check if shared medicine quantity if equal 0 remove it
+    fun checkSharedMedicineQuantity(id: String) {
+        usersRef.child(id).child("quantity").get().addOnSuccessListener { quantitySnapshot ->
+            val quantity = quantitySnapshot.value as Long
+            if (quantity == 0L) {
+                removeSharedMedicine(id)
+            }
+        }
+    }
+
+    // get all shared medicines from the database where userID != current user id and Quantity != 0
+    fun getAllSharedMedicinesWithQuantity(id: String, callback: (List<SharedMedicine>) -> Unit) {
+        val sharedMedicines = mutableListOf<SharedMedicine>()
+        usersRef.get().addOnSuccessListener { sharedMedicinesSnapshot ->
+            sharedMedicinesSnapshot.children.forEach { sharedMedicineSnapshot ->
+                val sharedMedicine = sharedMedicineSnapshot.getValue(SharedMedicine::class.java)
+                if (sharedMedicine != null && sharedMedicine.userId != id && sharedMedicine.quantity != 0) {
+                    sharedMedicines.add(sharedMedicine)
+                }
+            }
+            callback(sharedMedicines)
         }
     }
 }

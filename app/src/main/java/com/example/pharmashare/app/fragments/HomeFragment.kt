@@ -42,7 +42,7 @@ class HomeFragment : Fragment(), HomeAdapter.HomeListener {
         database = MyRoomDatabase.buildDatabase(context!!)
         dao = database.cartDao()
         val userId = UserRepository.getCurrentUserId()
-        SharedMedicineRepository.getAllSharedMedicines(userId) { sharedMedicines ->
+        SharedMedicineRepository.getAllSharedMedicinesWithQuantity(userId) { sharedMedicines ->
             homeAdapter = HomeAdapter(sharedMedicines, this)
             recyclerView.adapter = homeAdapter
         }
