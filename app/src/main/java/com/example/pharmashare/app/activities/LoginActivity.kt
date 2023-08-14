@@ -60,18 +60,3 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 }
-
-/*
-        //logout
-        UserRepository.logout()
-
-        // Create a user in Firebase database
-        val user = User("1", "John Doe", "123456789", "123456", "8/4/2023")
-        UserRepository.createUser(user) { success, message ->
-            if (success) {
-                Toast.makeText(this, "User created successfully", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            }
-        }
- */

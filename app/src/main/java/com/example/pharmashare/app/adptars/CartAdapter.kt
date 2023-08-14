@@ -120,6 +120,4 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
         fun checkItIsAvailable(available: Boolean)
         fun deleteItemFromCart(cartItem: Cart)
     }
-
-
 }

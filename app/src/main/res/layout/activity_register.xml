@@ -41,20 +41,40 @@
         android:inputType="textPassword"
         android:minHeight="48dp" />
 
+    <TextView
+        android:id="@+id/textViewAddPharmacy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextConfirmPassword"
+        android:layout_gravity="center"
+        android:layout_marginTop="2dp"
+        android:text="Add Pharmacy"
+        android:textColor="#000000"
+        android:textSize="24sp" />
+
     <EditText
         android:id="@+id/editTextPharmacyName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextConfirmPassword"
+        android:layout_below="@+id/textViewAddPharmacy"
         android:layout_marginTop="16dp"
         android:hint="Pharmacy Name"
         android:minHeight="48dp" />
+
+    <Spinner
+        android:id="@+id/spinnerCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:entries="@array/city_array"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/editTextPharmacyName"/>
 
     <EditText
         android:id="@+id/editTextPharmacyAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextPharmacyName"
+        android:layout_below="@+id/spinnerCity"
         android:layout_marginTop="16dp"
         android:hint="Pharmacy Address"
         android:minHeight="48dp" />
