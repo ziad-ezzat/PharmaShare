@@ -7,12 +7,22 @@
     android:orientation="vertical"
     tools:context=".app.fragments.AddFragment">
 
+    <EditText
+        android:id="@+id/medicine_filter_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Filter medicines..."
+        android:inputType="text"
+        android:drawablePadding="8dp"
+        android:layout_margin="10dp" />
+
     <Spinner
         android:id="@+id/medicine_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:minHeight="48dp" />
+
 
     <Spinner
         android:id="@+id/pharmacy_spinner"

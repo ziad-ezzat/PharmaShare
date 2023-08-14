@@ -2,6 +2,8 @@ package com.example.pharmashare.app.fragments
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +30,7 @@ class AddFragment : Fragment() {
     private lateinit var discountSeekBar: SeekBar
     private lateinit var selectedDiscountTextView: TextView
     private lateinit var priceAfterDiscount: TextView
+    private lateinit var filterEditText: EditText
 
     private val sharedMedicineRepository = SharedMedicineRepository
 
@@ -46,6 +49,7 @@ class AddFragment : Fragment() {
         discountSeekBar = rootView.findViewById(R.id.fragment_discount_seekbar)
         selectedDiscountTextView = rootView.findViewById(R.id.fragment_selected_discount)
         priceAfterDiscount = rootView.findViewById(R.id.fragment_price_after_discount)
+        filterEditText = rootView.findViewById(R.id.medicine_filter_edittext)
 
         // Initialize spinners with data
         initMedicineSpinner()
@@ -83,11 +87,26 @@ class AddFragment : Fragment() {
     }
 
     private fun initMedicineSpinner() {
+        val medicineNames = mutableListOf<String>()
+
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, medicineNames)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        medicinespinner.adapter = adapter
+
+
+        filterEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter.filter.filter(s)
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
         MedicineRepository.getMedicines { medicines ->
-            val medicineNames = medicines.map { it.name }
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, medicineNames)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            medicinespinner.adapter = adapter
+            medicineNames.addAll(medicines.map { it.name })
+            adapter.notifyDataSetChanged()
         }
     }
 
