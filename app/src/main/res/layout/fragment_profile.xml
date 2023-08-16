@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".app.fragments.ProfileFragment">
+    tools:context=".app.fragments.ProfileFragment"
+    android:background="@drawable/profileback">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

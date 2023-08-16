@@ -121,7 +121,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:backgroundTint="#2D302D"
+        android:backgroundTint="@color/black"
         android:text="@string/fragment_add_medicine"
         android:background="@drawable/round_button"
         android:textAllCaps="false"

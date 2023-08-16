@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".app.fragments.CartFragment">
+    tools:context=".app.fragments.CartFragment"
+    android:background="@drawable/orderback">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/order_recyclerView"
