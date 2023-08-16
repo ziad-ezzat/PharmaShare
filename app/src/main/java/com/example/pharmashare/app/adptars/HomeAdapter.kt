@@ -40,6 +40,8 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
         holder.medQuantityTv.text = "Quantity: ${sharedMedicine.quantity}"
         holder.medPriceTv.text = "Price: $${sharedMedicine.price}"
 
+
+
         holder.addToCartBtn.setOnClickListener {
             val sharedMedicine = sharedMedicines[position]
             var pharmacyId = ""

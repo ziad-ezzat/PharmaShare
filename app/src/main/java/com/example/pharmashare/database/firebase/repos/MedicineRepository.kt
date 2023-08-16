@@ -13,6 +13,7 @@ object MedicineRepository {
         val medicineId = database.getReference("medicines").push().key ?: ""
         val newMedicine = Medicine(medicineId, medicine.name)
 
+
         database.getReference("medicines").child(medicineId).setValue(newMedicine)
             .addOnCompleteListener { createMedicineTask ->
                 if (createMedicineTask.isSuccessful) {

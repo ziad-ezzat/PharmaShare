@@ -26,4 +26,5 @@
     <string name="minus">minus</string>
     <string name="errorMassageOverExceeded">you exceeded available quantity</string>
     <string name="errorMassageUnderOneUnit">you must have one unit</string>
+    <string name="addToCart">add</string>
 </resources>

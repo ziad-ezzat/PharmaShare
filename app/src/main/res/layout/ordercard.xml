@@ -11,23 +11,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="#00AEEF">
 
-
-        <TextView
-            android:id="@+id/mrdicine_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="TextView"
-            android:textColor="@color/black"
-            android:textSize="19sp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/mrdicine_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Medicine name"
+                android:textColor="@color/black"
+                android:textSize="19sp" />
 
             <TextView
                 android:id="@+id/price"
@@ -36,7 +42,7 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="TextView"
+                android:text="price"
                 android:textColor="@color/black"
                 android:textSize="19sp" />
 
@@ -45,9 +51,22 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:background="#ef00ae"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/order_plus_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:backgroundTint="#ef00ae"
+                android:contentDescription="@string/plus"
+                android:src="@drawable/baseline_add_circle_outline_24"
+                app:tint="#F8F1F1"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/order_med_quantity"
@@ -55,27 +74,18 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="1"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="19sp" />
-
-            <ImageButton
-                android:id="@+id/order_plus_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:backgroundTint="#2196F3"
-                android:contentDescription="@string/plus"
-                android:src="@drawable/baseline_add_circle_outline_24"
-                tools:ignore="TouchTargetSizeCheck" />
 
             <ImageButton
                 android:id="@+id/order_minus_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:backgroundTint="#E91E63"
+                android:backgroundTint="#ef00ae"
                 android:contentDescription="@string/minus"
                 android:src="@drawable/baseline_remove_circle_outline_24"
+                app:tint="#FAF5F5"
                 tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 

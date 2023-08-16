@@ -38,7 +38,7 @@ class HomeFragment : Fragment(), HomeAdapter.HomeListener {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         //declare of DB
-        database = MyRoomDatabase.buildDatabase(context!!)
+        database = MyRoomDatabase.buildDatabase(requireContext())
         dao = database.cartDao()
         val userId = UserRepository.getCurrentUserId()
         SharedMedicineRepository.getAllSharedMedicines(userId) { sharedMedicines ->
@@ -57,6 +57,8 @@ class HomeFragment : Fragment(), HomeAdapter.HomeListener {
             priceTotal = selectedQuantity * price,
             availableQuantity = sharedMedicine.quantity
         )
-        dao.insertByRoom(cart)
+        synchronized(cart){
+            dao.insertByRoom(cart)
+        }
     }
 }
