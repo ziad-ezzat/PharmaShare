@@ -118,9 +118,12 @@
 
     <Button
         android:id="@+id/med_makeOrder"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="Add to Cart"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:background="@drawable/round_button"
+        android:backgroundTint="#2196F3"
+        android:textColor="@color/white"/>
 
 </LinearLayout>
