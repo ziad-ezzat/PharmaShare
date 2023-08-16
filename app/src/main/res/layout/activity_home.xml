@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.Home">
+    tools:context=".app.activities.HomeActivity">
 
     <FrameLayout
         android:id="@+id/home_frame"
@@ -21,7 +21,7 @@
         android:layout_height="0dp"
         android:clipToPadding="true"
         app:itemIconSize="32dp"
-        app:itemIconTint="@color/black"
+        app:itemIconTint="@color/white"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
