@@ -2,14 +2,12 @@ package com.example.pharmashare.app.fragments
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.pharmashare.R
 import com.example.pharmashare.database.objects.SharedMedicine
@@ -30,6 +28,10 @@ class AddFragment : Fragment() {
     private lateinit var priceEditText: TextInputEditText
     private lateinit var calendarTextView: TextView
     private lateinit var addMedicineButton: Button
+    private lateinit var discountSeekBar: SeekBar
+    private lateinit var selectedDiscountTextView: TextView
+    private lateinit var priceAfterDiscount: TextView
+    private lateinit var filterEditText: EditText
 
     private val sharedMedicineRepository = SharedMedicineRepository
 
@@ -45,6 +47,10 @@ class AddFragment : Fragment() {
         priceEditText = rootView.findViewById(R.id.fragment_price)
         calendarTextView = rootView.findViewById(R.id.fragment_calendar)
         addMedicineButton = rootView.findViewById(R.id.add_medicine)
+        discountSeekBar = rootView.findViewById(R.id.fragment_discount_seekbar)
+        selectedDiscountTextView = rootView.findViewById(R.id.fragment_selected_discount)
+        priceAfterDiscount = rootView.findViewById(R.id.fragment_price_after_discount)
+        filterEditText = rootView.findViewById(R.id.medicine_filter_edittext)
 
         // Initialize spinners with data
         initMedicineSpinner()
@@ -60,15 +66,48 @@ class AddFragment : Fragment() {
             showDatePicker()
         }
 
+        // Set up seek bar listener
+        discountSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, discount: Int, fromUser: Boolean) {
+                selectedDiscountTextView.text = "$discount%"
+                val price = priceEditText.text.toString().toDoubleOrNull() ?: 0.0
+                val priceAfterDiscountValue = price - (price * (discount.toDouble() / 100))
+                priceAfterDiscount.text = priceAfterDiscountValue.toString()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // Do nothing
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                // Do nothing
+            }
+        })
+
         return rootView
     }
 
     private fun initMedicineSpinner() {
+        val medicineNames = mutableListOf<String>()
+
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, medicineNames)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        medicinespinner.adapter = adapter
+
+
+        filterEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter.filter.filter(s)
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
         MedicineRepository.getMedicines { medicines ->
-            val medicineNames = medicines.map { it.name }
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, medicineNames)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            medicinespinner.adapter = adapter
+            medicineNames.addAll(medicines.map { it.name })
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -88,6 +127,12 @@ class AddFragment : Fragment() {
         val quantity = quantityEditText.text.toString()
         val price = priceEditText.text.toString()
         val userId = UserRepository.getCurrentUserId()
+        val discount = discountSeekBar.progress
+        var priceAfterDiscount = priceAfterDiscount.text.toString()
+        if(discount == 0)
+        {
+            priceAfterDiscount = price
+        }
 
         if (selectedMedicine.isNullOrEmpty() || selectedPharmacy.isNullOrEmpty()) {
             Toast.makeText(requireContext(), "Please select a medicine and a pharmacy", Toast.LENGTH_SHORT).show()
@@ -102,6 +147,8 @@ class AddFragment : Fragment() {
             quantity = quantity.toIntOrNull() ?: 0,
             price = price.toDoubleOrNull() ?: 0.0,
             expiredDate = calendarTextView.text.toString(),
+            discount = discount,
+            priceAfterDiscount = priceAfterDiscount.toDoubleOrNull() ?: 0.0
         )
 
         sharedMedicineRepository.insertSharedMedicine(sharedMedicine) { isSuccess ->

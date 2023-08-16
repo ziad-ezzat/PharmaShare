@@ -12,7 +12,6 @@ class ProfileAdapter(private val profileItems: List<Order>) :
     RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val pharmacyName: TextView = itemView.findViewById(R.id.Pharmacy_Name)
         val orderPrice: TextView = itemView.findViewById(R.id.Order_price)
         val orderDate: TextView = itemView.findViewById(R.id.Order_date)
         val orderDetails: TextView = itemView.findViewById(R.id.Order_datails)
@@ -26,10 +25,9 @@ class ProfileAdapter(private val profileItems: List<Order>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val profileItem = profileItems[position]
-        holder.pharmacyName.text = profileItem.currentUserId
-        holder.orderPrice.text = profileItem.totalPrice.toString()
+        holder.orderPrice.text = "total price: ${profileItem.totalPrice}"
         holder.orderDate.text = profileItem.orderDate
-        holder.orderDetails.text = profileItem.orderDetails
+        holder.orderDetails.text = profileItem.orderDetails.subSequence(1,profileItem.orderDetails.length-1)
         holder.orderStatus.text = profileItem.status
     }
 

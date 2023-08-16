@@ -8,4 +8,6 @@ data class SharedMedicine(
     var quantity: Int = 1,
     val expiredDate: String = "",
     val price: Double = 0.0,
+    val discount: Int = 0,
+    val priceAfterDiscount: Double = 0.0
 )

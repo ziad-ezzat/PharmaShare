@@ -1,0 +1,55 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/back_ground">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Pharmacy"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"/>
+
+    <EditText
+        android:id="@+id/editTextPharmacyName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pharmacy Name"
+        android:layout_marginTop="16dp"
+        android:textColorHint="#999999"
+    />
+
+    <Spinner
+        android:id="@+id/spinnerCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:entries="@array/city_array"
+        android:spinnerMode="dropdown" />
+
+    <EditText
+        android:id="@+id/PharmacyAddressIndetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pharmacy Address"
+        android:layout_marginTop="16dp"
+        android:textColorHint="#999999"
+    />
+
+    <Button
+        android:id="@+id/buttonAddPharmacy"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Add Pharmacy"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/round_button"
+        android:backgroundTint="#2196F3"
+    />
+</LinearLayout>

@@ -1,11 +1,13 @@
 package com.example.pharmashare.app.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import com.example.pharmashare.R
@@ -23,7 +25,9 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var editTextPharmacyAddress: EditText
     private lateinit var buttonRegister: Button
     private lateinit var textViewError: TextView
+    private lateinit var spinnerCity: Spinner
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -36,6 +40,7 @@ class RegisterActivity : AppCompatActivity() {
         editTextPharmacyAddress = findViewById(R.id.editTextPharmacyAddress)
         buttonRegister = findViewById(R.id.buttonRegister)
         textViewError = findViewById(R.id.textViewError)
+        spinnerCity = findViewById(R.id.spinnerCity)
 
         buttonRegister.setOnClickListener {
             registerUser()
@@ -56,6 +61,8 @@ class RegisterActivity : AppCompatActivity() {
         val phoneNumber = editTextPhoneNumber.text.toString().trim()
         val pharmacyName = editTextPharmacyName.text.toString().trim()
         val pharmacyAddress = editTextPharmacyAddress.text.toString().trim()
+        val city = spinnerCity.selectedItem.toString()
+        val fullAddress = "$city - $pharmacyAddress"
 
         if (username.isEmpty() || phoneNumber.isEmpty() || password.isEmpty() ||
             confirmPassword.isEmpty() || pharmacyName.isEmpty() || pharmacyAddress.isEmpty()) {
@@ -70,7 +77,7 @@ class RegisterActivity : AppCompatActivity() {
 
         // create user hava a pharmacy
         val user = User("Temp",username,phoneNumber,password,"Temp")
-        val pharmacy = Pharmacy("Temp",pharmacyName,pharmacyAddress,"Temp")
+        val pharmacy = Pharmacy("Temp",pharmacyName,fullAddress,"Temp")
 
         UserRepository.createUserAndPharmacy(user,pharmacy) { success, message ->
             if (success) {

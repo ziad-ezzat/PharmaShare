@@ -15,15 +15,6 @@ interface CartRepo {
     fun insertByRoom(cart: Cart)
     @Update
     fun updateByRoom(cart: Cart)
-    @Delete
-    fun deleteItemByRoom(cart: Cart)
-    @Delete
-    fun deleteListByRoom(carts:List<Cart>)
-    @Query("select * from cart_table where id = :id group BY pharmacyId")
-    fun getAllDateByIdWithRoom(id:Int):List<Cart>
-    @Query("select * from cart_table where pharmacyId = :pharmacyID group BY price")
-    fun getAllDateByPharmacyIdWithRoom(pharmacyID:String):MutableList<Cart>
-
     // delete all data from cart_table
     @Query("DELETE FROM cart_table")
     fun deleteAll()
@@ -31,4 +22,11 @@ interface CartRepo {
     // get all data from cart_table
     @Query("SELECT * FROM cart_table")
     fun getAll(): List<Cart>
+
+    @Delete
+    fun deleteItemByRoom(cart: Cart)
+
+    // check if the cart item exist in cart_table
+    @Query("SELECT * FROM cart_table WHERE sharedMedicineId = :sharedMedicineId")
+    fun checkIfMedicineExist(sharedMedicineId: String): Cart?
 }
