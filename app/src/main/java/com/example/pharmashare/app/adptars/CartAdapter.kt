@@ -11,7 +11,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.pharmashare.R
-import com.example.pharmashare.database.firebase.repos.SharedMedicineRepository
 import com.example.pharmashare.database.objects.Cart
 import com.example.pharmashare.database.room.MyRoomDatabase
 
@@ -66,7 +65,6 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
             resultBack.checkItIsAvailable(false)
         }
         holder.plusButton.setOnClickListener {
-
             if (cartItem.quantity == cartItem.availableQuantity) {
                 resultBack.checkItIsAvailable(true)
             } else {
@@ -76,7 +74,6 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
                 Toast.makeText(holder.itemView.context, "you exceeded available quantity", Toast.LENGTH_SHORT).show()
             }else{
                 cartItem.quantity++
-                SharedMedicineRepository.decreaseSharedMedicineQuantity(cartItem.sharedMedicineId)
             }
             cartItem.priceTotal = cartItem.price * cartItem.quantity
             holder.quantity.text = cartItem.quantity.toString()
@@ -91,7 +88,6 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
             if (cartItem.quantity > 1) {
                 cartItem.quantity -= 1
                 cartItem.priceTotal = cartItem.price * cartItem.quantity
-                SharedMedicineRepository.increaseSharedMedicineQuantity(cartItem.sharedMedicineId)
                 holder.quantity.text = cartItem.quantity.toString()
                 holder.price.text = cartItem.priceTotal.toString()
                 calculateTotalPrice()
@@ -99,8 +95,11 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
                 notifyItemChanged(position)
                 resultBack.backPrice(totalLiveData.value!!)
             } else if (cartItem.quantity == 1 && it.isPressed) {
-                SharedMedicineRepository.increaseSharedMedicineQuantity(cartItem.sharedMedicineId)
-                resultBack.deleteItemFromCart(cartItem)
+                Toast.makeText(
+                    holder.itemView.context,
+                    "you must have one unit",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -118,6 +117,7 @@ class CartAdapter(private val cartItems: MutableList<Cart>, resultBack: ResultBa
     interface ResultBack {
         fun backPrice(totalPrice: Double)
         fun checkItIsAvailable(available: Boolean)
-        fun deleteItemFromCart(cartItem: Cart)
     }
+
+
 }

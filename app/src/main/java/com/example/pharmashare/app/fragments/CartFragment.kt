@@ -99,7 +99,7 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
         // if we want to clear medicine
     }
 
-    override fun deleteItemFromCart(cartItem: Cart) {
+     fun deleteItemFromCart(cartItem: Cart) {
         dao.deleteItemByRoom(cartItem)
         orderAdapter = CartAdapter(dao.getAll() as MutableList<Cart>,this)
         recyclerView.adapter = orderAdapter
@@ -111,7 +111,7 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
         val price: Double
     ) {
         override fun toString(): String {
-            return "medicine name : $medicine price: $price quantity: $quantity"
+            return "\nmedicine name : $medicine \n price: $price\n quantity: $quantity"
         }
     }
 }

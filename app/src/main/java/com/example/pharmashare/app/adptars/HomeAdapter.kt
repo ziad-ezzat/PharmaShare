@@ -1,6 +1,7 @@
 package com.example.pharmashare.app.adptars
 
 import android.app.AlertDialog
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.example.pharmashare.R
 import com.example.pharmashare.database.firebase.repos.PharmacyRepository
 import com.example.pharmashare.database.firebase.repos.SharedMedicineRepository
 import com.example.pharmashare.database.objects.SharedMedicine
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val homeListener: HomeListener) :
     RecyclerView.Adapter<HomeAdapter.Holder>() {
@@ -22,10 +24,10 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
         val expiredDateTv: TextView = itemView.findViewById(R.id.expired_date)
         val medQuantityTv: TextView = itemView.findViewById(R.id.med_quantity)
         val medPriceTv: TextView = itemView.findViewById(R.id.med_price)
-        val addToCartBtn: Button = itemView.findViewById(R.id.med_makeOrder)
+        val addToCartBtn: FloatingActionButton = itemView.findViewById(R.id.med_makeOrder)
         val discountTv: TextView = itemView.findViewById(R.id.discount)
-        val discountPriceTv: TextView = itemView.findViewById(R.id.priceAfterDiscount)
-        val pharmacyAddressTv: TextView = itemView.findViewById(R.id.address)
+        val discountPriceTv: TextView = itemView.findViewById(R.id.med_price_discount)
+        val pharmacyAddressTv: TextView = itemView.findViewById(R.id.pharmacy_address)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -45,9 +47,10 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
         holder.medNameTv.text = sharedMedicine.medicineName
         holder.expiredDateTv.text = sharedMedicine.expiredDate
         holder.medQuantityTv.text = "Quantity: ${sharedMedicine.quantity}"
-        holder.medPriceTv.text = "Price: $${sharedMedicine.price}"
+        holder.medPriceTv.text = "${sharedMedicine.price}"
         holder.discountTv.text = "Discount: ${sharedMedicine.discount}%"
-        holder.discountPriceTv.text = "Price After Discount: $${sharedMedicine.priceAfterDiscount}"
+        holder.discountPriceTv.text = sharedMedicine.priceAfterDiscount.toString()
+        holder.medPriceTv.paintFlags = holder.medPriceTv.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
         holder.addToCartBtn.setOnClickListener {
             val sharedMedicine = sharedMedicines[position]
