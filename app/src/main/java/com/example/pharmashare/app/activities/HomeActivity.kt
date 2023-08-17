@@ -6,7 +6,6 @@ import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pharmashare.R
@@ -14,6 +13,7 @@ import com.example.pharmashare.app.fragments.AddFragment
 import com.example.pharmashare.app.fragments.CartFragment
 import com.example.pharmashare.app.fragments.HomeFragment
 import com.example.pharmashare.app.fragments.ProfileFragment
+import com.example.pharmashare.database.firebase.repos.MedicineRepository
 import com.example.pharmashare.databinding.ActivityHomeBinding
 import com.example.pharmashare.database.firebase.repos.UserRepository
 
@@ -21,6 +21,7 @@ class HomeActivity : AppCompatActivity() {
     private val binding: ActivityHomeBinding by lazy {
         ActivityHomeBinding.inflate(layoutInflater)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

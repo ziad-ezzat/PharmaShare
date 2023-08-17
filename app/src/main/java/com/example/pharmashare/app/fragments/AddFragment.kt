@@ -105,7 +105,7 @@ class AddFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        MedicineRepository.getMedicines { medicines ->
+        MedicineRepository.getAllMedicines { medicines ->
             medicineNames.addAll(medicines.map { it.name })
             adapter.notifyDataSetChanged()
         }

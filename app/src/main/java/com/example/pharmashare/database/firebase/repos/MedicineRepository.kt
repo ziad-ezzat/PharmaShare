@@ -8,24 +8,29 @@ object MedicineRepository {
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val usersRef: DatabaseReference = database.getReference("medicines")
 
-    // insert a new medicine into the database auto generated id
-    fun insertMedicine(medicine: Medicine, callback: (Boolean, String?) -> Unit) {
-        val medicineId = database.getReference("medicines").push().key ?: ""
-        val newMedicine = Medicine(medicineId, medicine.name)
-
-        database.getReference("medicines").child(medicineId).setValue(newMedicine)
-            .addOnCompleteListener { createMedicineTask ->
-                if (createMedicineTask.isSuccessful) {
-                    callback(true, null) // Success
-                } else {
-                    callback(false, createMedicineTask.exception?.message) // Handle medicine creation failure
-                }
-            }
+    // insert a medicines list to the database make sure that the list has no duplicates before inserting and generate a unique id for each medicine
+    fun insertMedicines(medicines: List<String>) {
+        val uniqueMedicines = medicines.toSet()
+        medicines.forEach { medicineName ->
+            val medicineId = generateUniqueId() // Generate a unique ID for each medicine
+            val medicine = Medicine(medicineId, medicineName, /* other properties */)
+            val medicineRef = usersRef.child(medicineId)
+            medicineRef.setValue(medicine)
+        }
     }
 
-    fun getMedicines(callback: (ArrayList<Medicine>) -> Unit) {
-        val medicines = ArrayList<Medicine>()
+    fun generateUniqueId(): String {
+        // Generate a unique ID using a combination of current timestamp and a random number
+        val timestamp = System.currentTimeMillis()
+        val random = (Math.random() * 1000).toInt() // Generate a random number between 0 and 999
+        return "medicine_$timestamp$random"
+    }
+
+
+    // get all medicines from the database
+    fun getAllMedicines(callback: (List<Medicine>) -> Unit) {
         usersRef.get().addOnSuccessListener { medicinesSnapshot ->
+            val medicines = mutableListOf<Medicine>()
             medicinesSnapshot.children.forEach { medicineSnapshot ->
                 val medicine = medicineSnapshot.getValue(Medicine::class.java)
                 if (medicine != null) {
@@ -51,6 +56,11 @@ object MedicineRepository {
             }
             callback(null)
         }
+    }
+
+    // remove all medicines from the database
+    fun removeAllMedicines() {
+        usersRef.removeValue()
     }
 
 }
