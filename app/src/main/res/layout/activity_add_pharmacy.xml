@@ -22,7 +22,7 @@
         android:hint="Pharmacy Name"
         android:layout_marginTop="16dp"
         android:textColorHint="#999999"
-    />
+        />
 
     <Spinner
         android:id="@+id/spinnerCity"
@@ -39,7 +39,7 @@
         android:hint="Pharmacy Address"
         android:layout_marginTop="16dp"
         android:textColorHint="#999999"
-    />
+        />
 
     <Button
         android:id="@+id/buttonAddPharmacy"
@@ -51,5 +51,5 @@
         android:textColor="#ffffff"
         android:background="@drawable/round_button"
         android:backgroundTint="#2196F3"
-    />
+        />
 </LinearLayout>

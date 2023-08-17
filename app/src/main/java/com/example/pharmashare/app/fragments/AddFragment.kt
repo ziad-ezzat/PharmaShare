@@ -1,5 +1,6 @@
 package com.example.pharmashare.app.fragments
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
@@ -128,8 +129,7 @@ class AddFragment : Fragment() {
         val userId = UserRepository.getCurrentUserId()
         val discount = discountSeekBar.progress
         var priceAfterDiscount = priceAfterDiscount.text.toString()
-        if(discount == 0)
-        {
+        if (discount == 0) {
             priceAfterDiscount = price
         }
 
@@ -150,15 +150,28 @@ class AddFragment : Fragment() {
             priceAfterDiscount = priceAfterDiscount.toDoubleOrNull() ?: 0.0
         )
 
-        sharedMedicineRepository.insertSharedMedicine(sharedMedicine) { isSuccess ->
-            if (isSuccess) {
-                clearFields()
-            } else {
-                Toast.makeText(requireContext(), "Failed to add medicine", Toast.LENGTH_SHORT).show()
+        // Build the confirmation dialog
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setTitle("Confirm Sharing")
+            .setMessage("Are you sure you want to share this medicine?")
+            .setPositiveButton("Yes") { _, _ ->
+                // User confirmed, proceed to share the medicine
+                sharedMedicineRepository.insertSharedMedicine(sharedMedicine) { isSuccess ->
+                    if (isSuccess) {
+                        clearFields()
+                        Toast.makeText(requireContext(), "Medicine shared successfully", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Failed to share medicine", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
-        }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                // User canceled, do nothing
+                dialog.dismiss()
+            }
 
-        Toast.makeText(requireContext(), "Medicine added successfully", Toast.LENGTH_SHORT).show()
+        // Show the confirmation dialog
+        alertDialogBuilder.create().show()
     }
 
     private fun clearFields() {

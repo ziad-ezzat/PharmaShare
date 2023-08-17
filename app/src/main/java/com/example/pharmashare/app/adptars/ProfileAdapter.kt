@@ -1,5 +1,6 @@
 package com.example.pharmashare.app.adptars
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,6 @@ class ProfileAdapter(private val profileItems: List<Order>) :
     RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val pharmacyName: TextView = itemView.findViewById(R.id.Pharmacy_Name)
         val orderPrice: TextView = itemView.findViewById(R.id.Order_price)
         val orderDate: TextView = itemView.findViewById(R.id.Order_date)
         val orderDetails: TextView = itemView.findViewById(R.id.Order_datails)
@@ -26,12 +26,24 @@ class ProfileAdapter(private val profileItems: List<Order>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val profileItem = profileItems[position]
-        holder.pharmacyName.text = profileItem.currentUserId
-        holder.orderPrice.text = profileItem.totalPrice.toString()
-        holder.orderDate.text = profileItem.orderDate
-        holder.orderDetails.text = profileItem.orderDetails
+        holder.orderPrice.text = "Total Order Price : " + profileItem.totalPrice.toString()
+        holder.orderDate.text = "in :" + profileItem.orderDate
+        holder.orderDetails.setOnClickListener {
+            // Show order details in a dialog
+            val alertDialogBuilder = AlertDialog.Builder(holder.itemView.context)
+            alertDialogBuilder.setTitle("Order Details")
+                .setMessage(profileItem.orderDetails)
+                .setPositiveButton("OK") { dialog, _ ->
+                    // Dismiss the dialog when OK is clicked
+                    dialog.dismiss()
+                }
+
+            val alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
+        }
         holder.orderStatus.text = profileItem.status
     }
+
 
     override fun getItemCount(): Int = profileItems.size
 }

@@ -1,6 +1,7 @@
 package com.example.pharmashare.app.adptars
 
 import android.app.AlertDialog
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.example.pharmashare.R
 import com.example.pharmashare.database.firebase.repos.PharmacyRepository
 import com.example.pharmashare.database.firebase.repos.SharedMedicineRepository
 import com.example.pharmashare.database.objects.SharedMedicine
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val homeListener: HomeListener) :
     RecyclerView.Adapter<HomeAdapter.Holder>() {
@@ -22,10 +24,10 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
         val expiredDateTv: TextView = itemView.findViewById(R.id.expired_date)
         val medQuantityTv: TextView = itemView.findViewById(R.id.med_quantity)
         val medPriceTv: TextView = itemView.findViewById(R.id.med_price)
-        val addToCartBtn: Button = itemView.findViewById(R.id.med_makeOrder)
+        val addToCartBtn: FloatingActionButton = itemView.findViewById(R.id.med_makeOrder)
         val discountTv: TextView = itemView.findViewById(R.id.discount)
-        val discountPriceTv: TextView = itemView.findViewById(R.id.priceAfterDiscount)
-        val pharmacyAddressTv: TextView = itemView.findViewById(R.id.address)
+        val discountPriceTv: TextView = itemView.findViewById(R.id.med_price_discount)
+        val pharmacyAddressTv: TextView = itemView.findViewById(R.id.pharmacy_address)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -38,16 +40,25 @@ class HomeAdapter(private val sharedMedicines: List<SharedMedicine>, private val
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val sharedMedicine = sharedMedicines[position]
 
-        holder.pharmacyNameTv.text = sharedMedicine.pharmacyName
+        if (sharedMedicine.discount > 0) {
+            holder.discountTv.visibility = View.VISIBLE;
+            holder.discountPriceTv.visibility = View.VISIBLE;
+            holder.discountPriceTv.text = sharedMedicine.priceAfterDiscount.toString()
+            holder.discountTv.text = "Discount: ${sharedMedicine.discount}%"
+            holder.medPriceTv.paintFlags = holder.medPriceTv.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        } else {
+            holder.discountTv.visibility = View.GONE;
+            holder.discountPriceTv.visibility = View.GONE;
+        }
+
+        holder.pharmacyNameTv.text = "Pharmacy Name : " + sharedMedicine.pharmacyName
         PharmacyRepository.getPharmacyAddressByName(sharedMedicine.pharmacyName) { pharmacy ->
-            holder.pharmacyAddressTv.text = pharmacy
+            holder.pharmacyAddressTv.text = "Address : " + pharmacy
         }
         holder.medNameTv.text = sharedMedicine.medicineName
-        holder.expiredDateTv.text = sharedMedicine.expiredDate
+        holder.expiredDateTv.text = "expired Date : " + sharedMedicine.expiredDate
         holder.medQuantityTv.text = "Quantity: ${sharedMedicine.quantity}"
-        holder.medPriceTv.text = "Price: $${sharedMedicine.price}"
-        holder.discountTv.text = "Discount: ${sharedMedicine.discount}%"
-        holder.discountPriceTv.text = "Price After Discount: $${sharedMedicine.priceAfterDiscount}"
+        holder.medPriceTv.text = "${sharedMedicine.price}"
 
         holder.addToCartBtn.setOnClickListener {
             val sharedMedicine = sharedMedicines[position]

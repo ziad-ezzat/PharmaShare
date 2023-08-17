@@ -26,35 +26,37 @@
     <string name="minus">minus</string>
     <string name="errorMassageOverExceeded">you exceeded available quantity</string>
     <string name="errorMassageUnderOneUnit">you must have one unit</string>
+
+    <string name="addToCart">add</string>
     <string-array name="city_array">
-    <item>Alexandria</item>
-    <item>Cairo</item>
-    <item>Giza</item>
-    <item>Aswan</item>
-    <item>Asyut</item>
-    <item>Damanhur</item>
-    <item>Beni Suef</item>
-    <item>Port Said</item>
-    <item>Suez</item>
-    <item>El Mahalla El Kubra</item>
-    <item>El Mansoura</item>
-    <item>Tanta</item>
-    <item>Fayyum</item>
-    <item>Zagazig</item>
-    <item>Ismailia</item>
-    <item>Kafr el-Sheikh</item>
-    <item>Luxor</item>
-    <item>Qena</item>
-    <item>El Arish</item>
-    <item>El Faiyum</item>
-    <item>El Minya</item>
-    <item>Damietta</item>
-    <item>Marsa Matruh</item>
-    <item>Qalyub</item>
-    <item>Abu Kabir</item>
-    <item>El Tor</item>
-    <item>El Gouna</item>
-    <item>El Alamein</item>
-    <item>Shibin El Kom</item>
+        <item>Alexandria</item>
+        <item>Cairo</item>
+        <item>Giza</item>
+        <item>Aswan</item>
+        <item>Asyut</item>
+        <item>Damanhur</item>
+        <item>Beni Suef</item>
+        <item>Port Said</item>
+        <item>Suez</item>
+        <item>El Mahalla El Kubra</item>
+        <item>El Mansoura</item>
+        <item>Tanta</item>
+        <item>Fayyum</item>
+        <item>Zagazig</item>
+        <item>Ismailia</item>
+        <item>Kafr el-Sheikh</item>
+        <item>Luxor</item>
+        <item>Qena</item>
+        <item>El Arish</item>
+        <item>El Faiyum</item>
+        <item>El Minya</item>
+        <item>Damietta</item>
+        <item>Marsa Matruh</item>
+        <item>Qalyub</item>
+        <item>Abu Kabir</item>
+        <item>El Tor</item>
+        <item>El Gouna</item>
+        <item>El Alamein</item>
+        <item>Shibin El Kom</item>
     </string-array>
 </resources>

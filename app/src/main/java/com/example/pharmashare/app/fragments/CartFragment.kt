@@ -1,5 +1,6 @@
 package com.example.pharmashare.app.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -71,21 +72,36 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
             if (cartItems.isEmpty()) {
                 return@setOnClickListener
             }
-            val order = Order(
-                id = "temp",
-                currentUserId = userId,
-                orderDate = dateFormat.format(Date()).format("YYYY/MM/dd"),
-                totalPrice = totalPrice.text.toString().toDouble(),
-                orderDetails = items.toString(),
-                status = "done"
-            )
-            OrderRepository.insertOrder(order) {
-                Log.d("done", "$it")
-            }
-            dao.deleteAll()
-            cartItems = dao.getAll() as MutableList<Cart>
-            orderAdapter = CartAdapter(cartItems, this)
-            recyclerView.adapter = orderAdapter
+
+            // Build the confirmation dialog
+            val alertDialogBuilder = AlertDialog.Builder(requireContext())
+            alertDialogBuilder.setTitle("Confirm Order")
+                .setMessage("Are you sure you want to place this order?")
+                .setPositiveButton("Yes") { _, _ ->
+                    // User confirmed, proceed to place the order
+                    val order = Order(
+                        id = "temp",
+                        currentUserId = userId,
+                        orderDate = dateFormat.format(Date()).format("YYYY/MM/dd"),
+                        totalPrice = totalPrice.text.toString().toDouble(),
+                        orderDetails = items.toString(),
+                        status = "done"
+                    )
+                    OrderRepository.insertOrder(order) {
+                        Log.d("done", "$it")
+                    }
+                    dao.deleteAll()
+                    cartItems = dao.getAll() as MutableList<Cart>
+                    orderAdapter = CartAdapter(cartItems, this)
+                    recyclerView.adapter = orderAdapter
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    // User canceled, do nothing
+                    dialog.dismiss()
+                }
+
+            // Show the confirmation dialog
+            alertDialogBuilder.create().show()
         }
 
         return rootView
@@ -111,7 +127,7 @@ class CartFragment : Fragment(), CartAdapter.ResultBack {
         val price: Double
     ) {
         override fun toString(): String {
-            return "medicine name : $medicine price: $price quantity: $quantity"
+            return "\nmedicine name : $medicine \n price: $price\n quantity: $quantity"
         }
     }
 }

@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Login failed. Incorrect credentials.", Toast.LENGTH_SHORT).show()
                 }
             }
         }

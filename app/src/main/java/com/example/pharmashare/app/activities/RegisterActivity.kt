@@ -82,11 +82,12 @@ class RegisterActivity : AppCompatActivity() {
         UserRepository.createUserAndPharmacy(user,pharmacy) { success, message ->
             if (success) {
                 // Navigate to the next activity
+                Toast.makeText(this, "Sign up successful. Congratulation U now have an account", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show()
             }
         }
     }

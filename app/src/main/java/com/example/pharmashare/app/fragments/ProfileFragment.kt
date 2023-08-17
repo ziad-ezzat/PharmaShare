@@ -29,8 +29,10 @@ class ProfileFragment : Fragment() {
 
         // Fetch user name and set it to the profileName TextView
         UserRepository.getCurrentUserName() { userName ->
-            profileName.text = userName
+            profileName.text = "UserName" + "\n" + userName
         }
+
+        pharmacyNameTV.text = "loading..."
 
         // Fetch pharmacy names and set them to the pharmacyNameTV TextView
         PharmacyRepository.getAllPharmaciesByOwnerId(userId) { pharmacyList ->
